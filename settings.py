@@ -2,12 +2,6 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='survey',
-        display_name='survey',
-        num_demo_participants=1,
-        app_sequence=['survey'],
-    ),
-    dict(
         name='build',
         display_name='build',
         num_demo_participants=1,
@@ -31,15 +25,6 @@ LANGUAGE_CODE = 'en'
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
-
-ROOMS = [
-    dict(
-        name='econ101',
-        display_name='Econ 101 class',
-        participant_label_file='_rooms/econ101.txt',
-    ),
-    dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
-]
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
@@ -111,17 +96,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 
 # Password validation
