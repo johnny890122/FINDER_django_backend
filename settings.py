@@ -36,7 +36,7 @@ Here are some oTree games.
 
 
 SECRET_KEY = 'qr1jdvo2&&!4&db(8ea++y^(np687zxj!dg$j3r14!4+44&u%&'
-
+ALLOWED_HOSTS = ['testserver']
 
 from pathlib import Path
 import os
@@ -133,9 +133,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "frontend/build/static"),
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "frontend/build/static"),
+]
 CORS_ORIGIN_ALLOW_ALL = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
