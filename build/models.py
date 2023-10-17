@@ -26,7 +26,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
-    age = models.IntegerField(label='What is your age?', min=13, max=125)
+    age = models.IntegerField(label='What is your age?', min=13, max=125, initial=20)
 
     gender = models.StringField(
         choices=[['Male', 'Male'], ['Female', 'Female']],

@@ -36,7 +36,7 @@ Here are some oTree games.
 
 
 SECRET_KEY = 'qr1jdvo2&&!4&db(8ea++y^(np687zxj!dg$j3r14!4+44&u%&'
-ALLOWED_HOSTS = ['testserver']
+
 
 from pathlib import Path
 import os
@@ -51,11 +51,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# CORS settings
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+)
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,6 +65,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
     'otree', 
 ]
 
