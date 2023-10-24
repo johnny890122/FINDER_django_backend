@@ -6,7 +6,7 @@ from otree.api import *
 from django.http import JsonResponse
 from rest_framework import status
 
-class Index(Page):
+class index(Page):
     form_model = 'player'
     form_fields = ['age']
 
@@ -31,7 +31,7 @@ class Demographics(Page):
     form_fields = ['age', 'gender']
 
 
-page_sequence = [Index, Demographics]
+page_sequence = [index, Demographics]
 
 # https://github.com/oTree-org/otree-docs
 # https://github.com/oTree-org/otree-core

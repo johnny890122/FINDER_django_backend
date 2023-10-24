@@ -19,10 +19,10 @@ from django.views.generic import TemplateView
 from otree.urls import urlpatterns
 from django.http import JsonResponse
 from rest_framework import status
-from build.pages import Index
+from build_for_test.pages import index
 import re
 
 urlpatterns += [
     path('admin/', admin.site.urls),
-    path('api/', Index.vars_for_react),
+    path('api/', index.vars_for_react),
 ]
