@@ -1,22 +1,25 @@
+## Backend
+```
+python3 -m venv env
+source env/bin/activate  # Windows: env\Scripts\activate
+pip3 install -r requirements.txt
+otree devserver
+```
+
+## Frontend
+
 frontend 資料夾是可以獨立運作的 React 專案。
 
-## Usage
+```
 cd frontend 
 npm install (first time)
 npm start (平常 debug 用)
-npm run-script build (for otree 前端)
+npm run build (for otree 前端)
+```
 
-## build
-npm run-script build 後，frontend 會出現一個 build 的資料夾。
-
-build 中的檔案，我目前覺得最重要的是index.html, static/ 和 asset-manifest.json, manifest.json。
-
-為了要跟 otree 接在一起，我先建立了一個叫做 build_for_test 的檔案，除了 index.html 以外，其他都要擺在跟
-__init__.py 同一層，index.html 要放在 templates/build_for_test/ 下。p.s. 這個資料夾下面的檔案，名字可以對應到
- page.py 裡面的 class。
-
-### 可優化之處
-我猜可以寫一個 script，讓 npm run-script build 後，把這些檔案自動放到相對應的地方去。
+### build
+- npm run build 後，會將 build 後的檔案放到 `build_for_test/`
+- 這個資料夾下面的檔案，名字可以對應到 `page.py` 裡面的 class。
 
 ## 前端 -> 後端
 我目前是把 otree 的前端直接複製過來，就可以順利把前端輸入的資料，送到 otree 後臺。
