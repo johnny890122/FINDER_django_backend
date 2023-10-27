@@ -1,4 +1,8 @@
 frontend/node_modules
 __pycache__/
+build_for_test/__pycache__/
+build_for_test/_builtin/__pycache__/
 .DS_Store
 env/
+db_test.ipynb
+__temp_migrations/
