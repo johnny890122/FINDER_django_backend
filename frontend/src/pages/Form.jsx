@@ -1,4 +1,20 @@
-export const Form = ({ testingData }) => {
+import { useState, useEffect } from "react"
+import axios from "axios"
+
+export const Form = () => {
+  const [testingData, setTestingData] = useState([])
+  useEffect(() => {
+    axios
+      .get('http://localhost:8000/api/')
+      .then((response) => response)
+      .then((data) => {
+        setTestingData(data['data']['test'])
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
+  }, [])
+
   return (
     <div class="otree-body container">
       <h2 class="otree-title page-header">Survey</h2>
