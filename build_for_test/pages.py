@@ -7,24 +7,25 @@ from django.http import JsonResponse
 from rest_framework import status
 
 class index(Page):
-    form_model = 'player'
-    form_fields = ['age']
+    pass 
+    # form_model = 'player'
+    # form_fields = ['age']
 
-    def __init__(self):
-        self.template = {
-            "test": "Hello World!"
-        }
+    # def __init__(self):
+    #     self.template = {
+    #         "test": "Hello World!"
+    #     }
 
-    def vars_for_template(self, player=None):
-        print(self.player.session.code)
-        return self.template
+    # def vars_for_template(self, player=None):
+    #     print(self.player.session.code)
+    #     return self.template
 
-    def vars_for_react(self):
-        # TODO: FIX the template bug
-        template = {
-            "test": "Hello World!"
-        }
-        return JsonResponse(template, status=status.HTTP_200_OK)
+    # def vars_for_react(self):
+    #     # TODO: FIX the template bug
+    #     template = {
+    #         "test": "Hello World!"
+    #     }
+    #     return JsonResponse(template, status=status.HTTP_200_OK)
 
 class Demographics(Page):
     form_model = 'player'
