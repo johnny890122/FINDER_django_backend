@@ -5,27 +5,35 @@ from .models import Constants, Player
 from otree.api import *
 from django.http import JsonResponse
 from rest_framework import status
+from django.conf import settings
+
+# settings.configure(DEBUG=True)
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+
+from rest_framework.response import Response
+
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
 
 class index(Page):
-    pass 
-    # form_model = 'player'
-    # form_fields = ['age']
+    form_model = 'player'
+    form_fields = ['age']
 
-    # def __init__(self):
-    #     self.template = {
-    #         "test": "Hello World!"
-    #     }
+    def vars_for_react(self):
 
-    # def vars_for_template(self, player=None):
-    #     print(self.player.session.code)
-    #     return self.template
+        if self.GET.get('pk') == "abc":
+            template = {
+                "test": "abc"
+            }
+        else:
+            template = {
+                "test": 1111
+            }
 
-    # def vars_for_react(self):
-    #     # TODO: FIX the template bug
-    #     template = {
-    #         "test": "Hello World!"
-    #     }
-    #     return JsonResponse(template, status=status.HTTP_200_OK)
+        return JsonResponse(template, status=status.HTTP_200_OK)
 
 class Demographics(Page):
     form_model = 'player'

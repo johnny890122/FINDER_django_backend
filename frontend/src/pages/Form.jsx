@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 
+
 export const Form = () => {
   const [testingData, setTestingData] = useState([])
   useEffect(() => {
     axios
-      .get('http://localhost:8000/api/')
+      .get('http://localhost:8000/api/', {
+        params: { pk: "abc" },
+      })
       .then((response) => response)
       .then((data) => {
         setTestingData(data['data']['test'])
