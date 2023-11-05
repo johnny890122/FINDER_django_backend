@@ -1,15 +1,15 @@
 import { Routes, Route } from 'react-router-dom'
-import { NavBar } from './components/NavBar'
-import { Form } from './pages/Form'
-import { Data } from './pages/Data'
+import { Home } from './pages/Home'
+import { Tour } from './pages/Tour'
+import { GameHome } from './pages/game'
 
 const App = () => {
   return (
     <>
-      <NavBar />
       <Routes>
-        <Route path="/" element={<Form />} />
-        <Route path="/data" element={<Data />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/tour" element={<Tour />} />
+        <Route path="/game" element={<GameHome />} />
       </Routes>
     </>
   )

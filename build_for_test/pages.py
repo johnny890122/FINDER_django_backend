@@ -41,6 +41,16 @@ class index(Page):
         # TODO: What should i return?
         return JsonResponse({}, status=status.HTTP_200_OK)        
 
+class session(Page):
+    def create(self):
+        data = json.loads(self.body)
+        print(data, type(data))
+        template = {
+            "difficulty": data['difficulty'],
+            "sessionId": "id"
+        }
+        return JsonResponse(template, status=status.HTTP_200_OK)
+
 class Demographics(Page):
     form_model = 'player'
     form_fields = ['age', 'gender']

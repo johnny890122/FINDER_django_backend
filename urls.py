@@ -19,11 +19,12 @@ from django.views.generic import TemplateView
 from otree.urls import urlpatterns
 from django.http import JsonResponse
 from rest_framework import status
-from build_for_test.pages import index
+from build_for_test.pages import index, session
 import re
 
 urlpatterns += [
     path('admin/', admin.site.urls),
     path('api/', index.vars_for_react),
     path('post/', index.post),
+    path('session/create', session.create)
 ]
