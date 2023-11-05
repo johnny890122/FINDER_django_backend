@@ -12,3 +12,4 @@ build_for_test/static/
 build_for_test/templates/build_for_test/index.html
 build_for_test/asset-manifest.json
 build_for_test/index.html
+build_frontend/

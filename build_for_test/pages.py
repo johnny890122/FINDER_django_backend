@@ -17,7 +17,7 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
-
+import json
 class index(Page):
     form_model = 'player'
     form_fields = ['age']
@@ -34,6 +34,12 @@ class index(Page):
             }
 
         return JsonResponse(template, status=status.HTTP_200_OK)
+    
+    def post(self):
+        data = json.loads(self.body)
+        print(data)
+        # TODO: What should i return?
+        return JsonResponse({}, status=status.HTTP_200_OK)        
 
 class Demographics(Page):
     form_model = 'player'

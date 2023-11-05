@@ -25,4 +25,5 @@ import re
 urlpatterns += [
     path('admin/', admin.site.urls),
     path('api/', index.vars_for_react),
+    path('post/', index.post),
 ]

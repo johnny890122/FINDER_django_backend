@@ -4,6 +4,22 @@ import axios from "axios"
 
 export const Form = () => {
   const [testingData, setTestingData] = useState([])
+
+  const getCookie = (name) => {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+
   useEffect(() => {
     axios
       .get('http://localhost:8000/api/', {
@@ -18,8 +34,41 @@ export const Form = () => {
       })
   }, [])
 
+  function submit(event) {
+    // axios.post(
+    //   'http://localhost:8000/post/', 
+    //   JSON.stringify({"aaa": "bbb"}), 
+    //   {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "X-CSRFToken": getCookie('csrftoken'),
+    //     },
+    //     credentials: "include",
+    //   }
+    // )
+    // .then((response) => console.log(response))
+    // .catch((err) => console.log(err))
+
+    fetch("http://localhost:8000/post/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie('csrftoken')
+      },
+      credentials: "include",
+      body: JSON.stringify({"aaa": "bbb"}),
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
   return (
     <div class="otree-body container">
+      <button type="submit" className="FooterRegisterForm__registerButton" onClick={submit}>submit</button>
       <h2 class="otree-title page-header">Survey</h2>
       <form
         class="otree-form"
