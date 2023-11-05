@@ -6,8 +6,10 @@ build_for_test/_builtin/__pycache__/
 env/
 db_test.ipynb
 __temp_migrations/
+__temp_migrations/build_for_test/
 build_for_frontend/
 build_for_test/static/
 build_for_test/templates/build_for_test/index.html
 build_for_test/asset-manifest.json
 build_for_test/index.html
+build_frontend/
