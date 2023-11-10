@@ -1,5 +1,5 @@
-otree==5.10.3
-Django==4.2.7
-django-cors-headers==4.3.0
+otree==3.4.0
+Django==2.2.12
+django-cors-headers==3.11.0
 requests==2.31.0
-djangorestframework==3.14.0
+djangorestframework==3.11.0

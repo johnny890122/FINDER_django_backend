@@ -52,10 +52,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
 
 # CORS settings
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8000',
-)
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -140,9 +138,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "frontend/build/static"),
 ]
-CORS_ORIGIN_ALLOW_ALL = True
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

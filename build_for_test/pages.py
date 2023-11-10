@@ -8,14 +8,6 @@ from rest_framework import status
 from django.conf import settings
 
 # settings.configure(DEBUG=True)
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
-
-from rest_framework.response import Response
-
-
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -36,14 +28,18 @@ class index(Page):
 
         return JsonResponse(template, status=status.HTTP_200_OK)
     
-    def post(self):
-        data = json.loads(self.body)
+    def aa(request):
+        print(request)
+        data = json.loads(request.body)
         print(data)
         # TODO: What should i return?
         return JsonResponse({}, status=status.HTTP_200_OK)        
 
+
 class session(Page):
+    @csrf_exempt
     def create(self):
+        
         data = json.loads(self.body)
         print(data, type(data))
         template = {
