@@ -52,8 +52,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
 
 # CORS settings
-CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOWED_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+)
 
 # Application definition
 INSTALLED_APPS = [
