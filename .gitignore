@@ -13,5 +13,3 @@ build_for_test/templates/build_for_test/index.html
 build_for_test/asset-manifest.json
 build_for_test/index.html
 build_frontend/
-template_data_for_frontend/tmp.ipynb
-template_data_for_frontend/911.gml
