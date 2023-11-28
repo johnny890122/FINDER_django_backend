@@ -19,4 +19,5 @@ from build_for_test.pages import GameStart
 
 urlpatterns += [
     path('networks/', GameStart.network_config), 
+    path('game_start/', GameStart.game_start), 
 ]
