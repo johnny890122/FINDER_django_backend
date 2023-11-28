@@ -11,49 +11,42 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-class index(Page):
-    form_model = 'player'
-    form_fields = ['age']
-
-    def vars_for_react(self):
-
-        if self.GET.get('pk') == "abc":
-            template = {
-                "test": "abc"
-            }
-        else:
-            template = {
-                "test": 1111
-            }
-
-        return JsonResponse(template, status=status.HTTP_200_OK)
+class GameStart(Page):
+    def network_config(self):
+        with open('_static/global/network_config.json', "r") as json_file:
+            network_config = json.load(json_file)
+        return JsonResponse(network_config, status=status.HTTP_200_OK)
     
-    def aa(request):
-        print(request)
-        data = json.loads(request.body)
-        print(data)
-        # TODO: What should i return?
-        return JsonResponse({}, status=status.HTTP_200_OK)        
+    # def vars_for_react(self):
+    #     if self.GET.get('pk') == "abc":
+    #         template = {
+    #             "test": "abc"
+    #         }
+    #     else:
+    #         template = {
+    #             "test": 1111
+    #         }
 
+    #     return JsonResponse(template, status=status.HTTP_200_OK)       
 
-class session(Page):
-    @csrf_exempt
-    def create(self):
+# class session(Page):
+#     @csrf_exempt
+#     def create(self):
         
-        data = json.loads(self.body)
-        print(data, type(data))
-        template = {
-            "difficulty": data['difficulty'],
-            "sessionId": "id"
-        }
-        return JsonResponse(template, status=status.HTTP_200_OK)
+#         data = json.loads(self.body)
+#         print(data, type(data))
+#         template = {
+#             "difficulty": data['difficulty'],
+#             "sessionId": "id"
+#         }
+#         return JsonResponse(template, status=status.HTTP_200_OK)
 
-class Demographics(Page):
-    form_model = 'player'
-    form_fields = ['age', 'gender']
+# class Demographics(Page):
+#     form_model = 'player'
+#     form_fields = ['age', 'gender']
 
 
-page_sequence = [index, Demographics]
+page_sequence = [GameStart]
 
 # https://github.com/oTree-org/otree-docs
 # https://github.com/oTree-org/otree-core
