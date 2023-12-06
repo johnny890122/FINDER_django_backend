@@ -32,6 +32,29 @@ class GameStart(Page):
 
         return JsonResponse(network_detail, status=status.HTTP_200_OK)       
 
+class Seeker_dismantle(Page):
+    def node_ranking(self):
+        network_config = get_network_config()
+        gData = self.GET.get('gData')
+        tool = self.GET.get('tool')
+
+        if tool in ["degree", "closeness", "betweenness", "page_rank"]:
+            centrality = node_centrality_criteria(G)
+        # "degree_ranking": { n: v for n, v in zip(centrality["degree"]["node"], centrality["degree"]["value"])},
+        # "closeness_ranking": { n: v for n, v in zip(centrality["closeness"]["node"], centrality["closeness"]["value"])},
+        # "betweenness_ranking": { n: v for n, v in zip(centrality["betweenness"]["node"], centrality["betweenness"]["value"])},
+        # "page_rank_ranking": { n: v for n, v in zip(centrality["page_rank"]["node"], centrality["page_rank"]["value"])},
+
+        mapping_dict = {val["code"]: key for key, val in network_config.items()}
+        network_name = mapping_dict[int(code)]
+        G = read_sample(f"network_data/empirical/{network_name}.gml")
+
+        node_ranking = {
+            "nodes": G_nodes(G), "links": G_links(G), 
+        }
+
+        return JsonResponse(node_ranking, status=status.HTTP_200_OK)
+
 # class session(Page):
 #     @csrf_exempt
 #     def create(self):

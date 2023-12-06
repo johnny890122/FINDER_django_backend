@@ -15,3 +15,5 @@ build_for_test/index.html
 build_frontend/
 template_data_for_frontend/tmp.ipynb
 template_data_for_frontend/911.gml
+db.sqlite3
+*.ipynb

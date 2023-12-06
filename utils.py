@@ -13,17 +13,38 @@ def read_sample(path: Path):
     relabel_map = {node: int(idx) for idx, node in enumerate(G.nodes())}
     return nx.relabel_nodes(G, relabel_map, copy=True)
 
-def G_nodes(G: Type[nx.Graph]) -> List[Dict[str, int]]:
-    degree = {node: degree for (node, degree) in G.degree()}
-    closeness = {node: closeness for (node, closeness) in nx.closeness_centrality(G).items()}
-    betweenness = {node: betweenness for (node, betweenness) in nx.betweenness_centrality(G).items()}
-    pagerank = {node: pagerank for (node, pagerank) in nx.pagerank(G).items()}
+def degree_centrality(G: Type[nx.Graph]) -> Dict[str, float]:
+    return {node: degree for (node, degree) in G.degree()}
+
+def closeness_centrality(G: Type[nx.Graph]) -> Dict[str, float]:
+    return {node: closeness for (node, closeness) in nx.closeness_centrality(G).items()}
+
+def betweenness_centrality(G: Type[nx.Graph]) -> Dict[str, float]:
+    return {node: betweenness for (node, betweenness) in nx.betweenness_centrality(G).items()}
+
+def pagerank_centrality(G: Type[nx.Graph]) -> Dict[str, float]:
+    return {node: pagerank for (node, pagerank) in nx.pagerank(G).items()}
+
+def G_nodes(G: Type[nx.Graph], criteria: str="none") -> List[Dict[str, float]]:
+    assert criteria in ["all", "none", "degree", "closeness", "betweenness", "page_rank"]
+    centrality_func = {
+        "degree": degree_centrality, "closeness": closeness_centrality,
+        "betweenness": betweenness_centrality, "page_rank": pagerank_centrality, 
+    }
+
+    if criteria == "all":
+        node_centrality = {centrality: func(G) for centrality, func in centrality_func.items()}
+    elif criteria == "none":
+        node_centrality = {}
+    else:
+        func = centrality_func[criteria]
+        node_centrality = {criteria: func(G)}
 
     nodes = []
-    for n, _ in list(G.nodes(data=True)):
+    for n in G.nodes():
         nodes.append({
-            "id": n, "degree": degree[n], "closeness": closeness[n], 
-            "betweenness": betweenness[n], "page_rank": pagerank[n]
+            **{"id": n}, 
+            **{centrality: value[n] for centrality, value in node_centrality.items()}
         })
 
     # # add a pesudo node as center node
