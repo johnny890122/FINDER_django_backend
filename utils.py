@@ -13,6 +13,21 @@ def read_sample(path: Path):
     relabel_map = {node: int(idx) for idx, node in enumerate(G.nodes())}
     return nx.relabel_nodes(G, relabel_map, copy=True)
 
+def parse_network(network_detail: Dict[str, list]) -> Type[nx.Graph]:
+    assert "nodes" in network_detail.keys() and "links" in network_detail.keys()
+    # Create an empty graph
+    G = nx.Graph()
+
+    # Add nodes to the graph
+    for node in network_detail['nodes']:
+        G.add_node(node['id'])
+
+    # Add edges to the graph
+    for link in network_detail['links']:
+        G.add_edge(link['source'], link['target'])
+
+    return G
+
 def degree_centrality(G: Type[nx.Graph]) -> Dict[str, float]:
     return {node: degree for (node, degree) in G.degree()}
 
@@ -69,3 +84,27 @@ def G_links(G: Type[nx.Graph]) -> List[Dict[str, int]]:
     #         node = keys[ np.argmax(values)]
     #         links.append({"source": "source", "target": node, 'dashed': "False", "display": "False"})
     return links
+
+def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:
+    assert criteria in ["degree", "closeness", "betweenness", "page_rank"]
+
+    # create a dict to store the ranking
+    ranking = {}
+
+    # sort node by the node centrality
+    node_lst = sorted(
+        G_nodes(G, criteria), 
+        key=lambda x: x[criteria], 
+        reverse=True
+    )
+
+    # assign the ranking
+    rank = 1
+    current_centrality_val = None
+    for node in node_lst:
+        if node[criteria] != current_centrality_val:
+            rank = node_lst.index(node) + 1
+            current_centrality_val = node[criteria]
+        ranking[node["id"]] = rank
+
+    return ranking
