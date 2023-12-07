@@ -63,12 +63,18 @@ class Seeker_dismantle(Page):
     
     def payoff(self) -> Type[JsonResponse]:
         gData, tool = self.GET.get('gData'), self.GET.get('tool')
-        # TODO: implement payoff computation
+        netword_id = str(self.GET.get('netword_id'))
+        sol = str(self.GET.get('sol'))
+        G = utils.parse_network(gData)
+        
+        payoff_in_round = utils.getRobustness(gData, netword_id, sol)
+        # TODO: implement accumulate payoff from round 1
         human_payoff = float()
+
+        # TODO: implement finder payoff computation
         finder_payoff = [float() for _ in range(5)]
 
-        # TODO: implement decide whether the game is end
-        isEnd = bool()
+        isEnd = utils.gameEnd(gData, sol)
 
         return JsonResponse({
             "human_payoff": human_payoff, 
