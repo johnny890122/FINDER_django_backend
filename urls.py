@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.urls import path
 from otree.urls import urlpatterns
-from build_for_test.pages import GameStart
+from build_for_test.pages import GameStart, SeekerDismantle
 
 urlpatterns += [
     path('networks/', GameStart.network_config), 
     path('game_start/', GameStart.game_start), 
+    path('tools/', SeekerDismantle.get_tools),
+    path('node_ranking/', SeekerDismantle.node_ranking),
 ]
