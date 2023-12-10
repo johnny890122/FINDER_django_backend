@@ -11,7 +11,7 @@ import networkx as nx
 # settings.configure(DEBUG=True)
 from django.views.decorators.csrf import csrf_exempt
 from typing import Type
-import utils
+import utils, json
 
 class GameStart(Page):
     def network_config(self):
@@ -20,15 +20,14 @@ class GameStart(Page):
     
     @csrf_exempt
     def game_start(self):
-        network_config = utils.get_network_config()
-        code = self.GET.get('chosen_network_id'),
         # TODO: implement store session_id  to database
-        try:
-            session_id =  self.GET.get('session_id')
-        except:
-            session_id = None
-        mapping_dict = {val["code"]: key for key, val in network_config.items()}
-        network_name = mapping_dict[int(code)]
+        code = self.GET.get('chosen_network_id')
+        session_id =  self.GET.get('session_id')
+        player_id = self.GET.get('player_id')
+
+        network_config = utils.get_network_config(code)
+        network_name = network_config["name"]
+        
         G = utils.read_sample(f"network_data/empirical/{network_name}.gml")
 
         network_detail = {
@@ -37,28 +36,36 @@ class GameStart(Page):
 
         return JsonResponse(network_detail, status=status.HTTP_200_OK)       
 
-class Seeker_dismantle(Page):
-    def node_ranking(self) -> Type[JsonResponse]:
-        gData, tool = self.GET.get('gData'), self.GET.get('tool')
-        # TODO: implement store data  to database
+class SeekerDismantle(Page):
+    def get_tools(self) -> Type[JsonResponse]:
         try:
-            session_id =  self.GET.get('session_id')
-            code = self.GET.get('chosen_network_id')
-            round_number = self.GET.get('round_number')
+            tool_id = self.GET.get('chosen_tool_id')
         except:
-            session_id = None
-            code = None
-            tool = None
-            round_number = None
+            tool_id = None
 
-        assert tool in ["degree", "closeness", "betweenness", "page_rank", "finder"]
-        
+        return JsonResponse(
+            utils.get_tool_config(tool_id), 
+            status=status.HTTP_200_OK
+        )
+
+    def node_ranking(self) -> Type[JsonResponse]:
+        gData, tool_id = self.GET.get('graph'), self.GET.get('chosen_tool_id')
+        # TODO: implement store tool to database
+
+        session_id =  self.GET.get('session_id')
+        player_id = self.GET.get('player_id')
+        code = self.GET.get('chosen_network_id')
+        round_number = self.GET.get('round_number')
+
         G = utils.parse_network(gData)
-        if tool in ["degree", "closeness", "betweenness", "page_rank"]:
-            ranking = utils.hxa_ranking(G, criteria=tool)
-        else:
-            # TODO: implement finder
+        tool = utils.get_tool_config(tool_id)['name']
+        if tool == "NO_HELP":
             ranking = {}
+        elif tool == "FINDER":
+            # TODO: implement finder
+            pass 
+        else:
+            ranking = utils.hxa_ranking(G, criteria=tool)
         return JsonResponse(ranking, status=status.HTTP_200_OK)
     
     def payoff(self) -> Type[JsonResponse]:
@@ -81,23 +88,6 @@ class Seeker_dismantle(Page):
             "finder_payoff": finder_payoff, 
             "isEnd": isEnd
         }, status=status.HTTP_200_OK)
-
-# class session(Page):
-#     @csrf_exempt
-#     def create(self):
-        
-#         data = json.loads(self.body)
-#         print(data, type(data))
-#         template = {
-#             "difficulty": data['difficulty'],
-#             "sessionId": "id"
-#         }
-#         return JsonResponse(template, status=status.HTTP_200_OK)
-
-# class Demographics(Page):
-#     form_model = 'player'
-#     form_fields = ['age', 'gender']
-
 
 page_sequence = [GameStart]
 

@@ -2,18 +2,31 @@ from typing import Type, List, Dict
 import networkx as nx
 from pathlib import Path
 import json
+from io import BytesIO
 
 def get_network_config(code: str=None) -> Dict:
     with open('network_data/empirical/network_config.json', "r") as json_file:
         network_config = json.load(json_file)
     
-    if code is None:
+    mapping_dct = {val["code"]: key for key, val in network_config.items()}
+    if code is None or code not in mapping_dct.keys():
         return network_config
     else:
-        mapping_dct = {val["code"]: key for key, val in network_config.items()}
         network_name = mapping_dct[str(code)]
-        return { **network_config[network_name], **{'name': network_name}}
+        return { **network_config[network_name], **{'name': network_name} }
+
+def get_tool_config(chosen_tool_id: int=None) -> Dict:
+    with open('_static/tool_config.json', "r") as json_file:
+        tool_config = json.load(json_file)
     
+    mapping_dct = {val["code"]: key for key, val in tool_config.items()}
+    
+    if chosen_tool_id is None or chosen_tool_id not in mapping_dct.keys():
+        return tool_config
+    else:
+        tool_name = mapping_dct[chosen_tool_id]
+        return { **tool_config[tool_name], **{'name': tool_name} }
+
 def read_sample(path: Path):
     G = nx.read_gml(path)
     relabel_map = {node: str(idx) for idx, node in enumerate(G.nodes())}
@@ -39,6 +52,11 @@ def get_gData(G: nx.Graph) -> Dict:
         "nodes": G_nodes(G), "links": G_links(G), 
     }
 
+def get_gml_format(gData: Dict) -> str:
+    G = parse_network(gData)
+    gml_generator = nx.generate_gml(G) 
+    return "\n".join([gml for gml in gml_generator])
+
 def remove_node(G: Type[nx.Graph], node: str) -> Type[nx.Graph]:
     if node in G.nodes():
         G.remove_node(node)
@@ -63,16 +81,16 @@ def GCC_size(G: Type[nx.Graph]) -> int:
         return len(max(nx.connected_components(G), key=len))
     return 1
 
-def G_nodes(G: Type[nx.Graph], criteria: str="none") -> List[Dict[str, float]]:
-    assert criteria in ["all", "none", "degree", "closeness", "betweenness", "page_rank"]
+def G_nodes(G: Type[nx.Graph], criteria: str="NO_HELP") -> List[Dict[str, float]]:
+    assert criteria in ["ALL", "NO_HELP", "HDA", "HCA", "HBA", "HPRA"]
     centrality_func = {
-        "degree": degree_centrality, "closeness": closeness_centrality,
-        "betweenness": betweenness_centrality, "page_rank": pagerank_centrality, 
+        "HDA": degree_centrality, "HCA": closeness_centrality,
+        "HBA": betweenness_centrality, "HPRA": pagerank_centrality, 
     }
 
-    if criteria == "all":
+    if criteria == "ALL":
         node_centrality = {centrality: func(G) for centrality, func in centrality_func.items()}
-    elif criteria == "none":
+    elif criteria == "NO_HELP":
         node_centrality = {}
     else:
         func = centrality_func[criteria]
@@ -109,7 +127,7 @@ def G_links(G: Type[nx.Graph]) -> List[Dict[str, int]]:
     return links
 
 def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:
-    assert criteria in ["degree", "closeness", "betweenness", "page_rank"]
+    assert criteria in ["HDA", "HCA", "HBA", "HPRA"]
 
     # create a dict to store the ranking
     ranking = {}
@@ -131,6 +149,13 @@ def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:
         ranking[node["id"]] = rank
 
     return ranking
+
+# TODO: implement finder ranking
+def finder_ranking(G: Type[nx.Graph], ):
+    content = BytesIO(get_gml_format(G).encode('utf-8'))
+    pass 
+    # model_file = f'./models/Model_EMPIRICAL/{player.in_round(1).playing_graph}.ckpt'
+    # _, sol = dqn.Evaluate(content, model_file)
 
 def getRobustness(gData: Dict, network_id: str, sol: str) -> float:
     # load original network by network_id
