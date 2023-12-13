@@ -14,6 +14,7 @@ from typing import Type
 import utils, json
 
 class GameStart(Page):
+    @csrf_exempt
     def network_config(self):
         network_config = utils.get_network_config()
         return JsonResponse(network_config, status=status.HTTP_200_OK)
@@ -37,6 +38,7 @@ class GameStart(Page):
         return JsonResponse(network_detail, status=status.HTTP_200_OK)       
 
 class SeekerDismantle(Page):
+    @csrf_exempt
     def get_tools(self) -> Type[JsonResponse]:
         try:
             tool_id = self.GET.get('chosen_tool_id')
@@ -48,6 +50,7 @@ class SeekerDismantle(Page):
             status=status.HTTP_200_OK
         )
 
+    @csrf_exempt
     def node_ranking(self) -> Type[JsonResponse]:
         gData, tool_id = self.GET.get('graph'), self.GET.get('chosen_tool_id')
         # TODO: implement store tool to database
@@ -68,6 +71,7 @@ class SeekerDismantle(Page):
             ranking = utils.hxa_ranking(G, criteria=tool)
         return JsonResponse(ranking, status=status.HTTP_200_OK)
     
+    @csrf_exempt
     def payoff(self) -> Type[JsonResponse]:
         gData, tool = self.GET.get('gData'), self.GET.get('tool')
         netword_id = str(self.GET.get('netword_id'))
