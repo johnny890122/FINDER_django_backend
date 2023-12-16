@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 from io import BytesIO
 
-def get_network_config(code: str=None) -> Dict:
+def get_network_config(code: int=None) -> Dict:
     with open('network_data/empirical/network_config.json', "r") as json_file:
         network_config = json.load(json_file)
     
@@ -12,7 +12,7 @@ def get_network_config(code: str=None) -> Dict:
     if code is None or code not in mapping_dct.keys():
         return network_config
     else:
-        network_name = mapping_dct[str(code)]
+        network_name = mapping_dct[code]
         return { **network_config[network_name], **{'name': network_name} }
 
 def get_tool_config(chosen_tool_id: int=None) -> Dict:
