@@ -52,13 +52,18 @@ class SeekerDismantle(Page):
 
     @csrf_exempt
     def node_ranking(self) -> Type[JsonResponse]:
-        gData, tool_id = self.GET.get('graph'), self.GET.get('chosen_tool_id')
-        # TODO: implement store tool to database
+        data = json.loads(self.body)
+        print(data.keys())
+        gData, tool_id = data.get('graphData'), data.get('chosen_tool_id')
+        print("tool_id", tool_id)
 
-        session_id =  self.GET.get('session_id')
-        player_id = self.GET.get('player_id')
-        code = self.GET.get('chosen_network_id')
-        round_number = self.GET.get('round_number')
+        G = utils.parse_network(gData)
+
+        # TODO: implement store tool to database
+        session_id =  data.get('session_id')
+        player_id = data.get('player_id')
+        code = data.get('chosen_network_id')
+        round_number = data.get('round_number')
 
         G = utils.parse_network(gData)
         tool = utils.get_tool_config(tool_id)['name']
@@ -69,6 +74,7 @@ class SeekerDismantle(Page):
             pass 
         else:
             ranking = utils.hxa_ranking(G, criteria=tool)
+
         return JsonResponse(ranking, status=status.HTTP_200_OK)
     
     @csrf_exempt
