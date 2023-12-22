@@ -4,10 +4,9 @@ from pathlib import Path
 import json
 from io import BytesIO
 
-def get_network_config(code: int=None) -> Dict:
+def get_network_config(code: str=None) -> Dict:
     with open('network_data/empirical/network_config.json', "r") as json_file:
         network_config = json.load(json_file)
-    
     mapping_dct = {val["code"]: key for key, val in network_config.items()}
     if code is None or code not in mapping_dct.keys():
         return network_config
@@ -15,7 +14,7 @@ def get_network_config(code: int=None) -> Dict:
         network_name = mapping_dct[code]
         return { **network_config[network_name], **{'name': network_name} }
 
-def get_tool_config(chosen_tool_id: int=None) -> Dict:
+def get_tool_config(chosen_tool_id: str=None) -> Dict:
     with open('_static/tool_config.json', "r") as json_file:
         tool_config = json.load(json_file)
     
@@ -43,7 +42,7 @@ def parse_network(network_detail: Dict[str, list]) -> Type[nx.Graph]:
 
     # Add edges to the graph
     for link in network_detail['links']:
-        G.add_edge(link['source'], link['target'])
+        G.add_edge(link['source']["id"], link['target']["id"])
 
     return G
 
