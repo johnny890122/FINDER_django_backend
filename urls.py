@@ -22,4 +22,5 @@ urlpatterns += [
     path('game_start/', GameStart.game_start), 
     path('tools/', SeekerDismantle.get_tools),
     path('node_ranking/', SeekerDismantle.node_ranking),
+    path('payoff/', SeekerDismantle.payoff),
 ]

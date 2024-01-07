@@ -1,14 +1,10 @@
-from otree.api import Currency as c, currency_range
-
-from ._builtin import Page, WaitPage
-from .models import Constants, Player
+from ._builtin import Page
 from otree.api import *
 from django.http import JsonResponse
 from rest_framework import status
-from django.conf import settings
 import networkx as nx
+from db import Database
 
-# settings.configure(DEBUG=True)
 from django.views.decorators.csrf import csrf_exempt
 from typing import Type
 import utils, json
@@ -21,16 +17,17 @@ class GameStart(Page):
     
     @csrf_exempt
     def game_start(self):
-        # TODO: implement store session_id  to database
         code = self.GET.get('chosen_network_id')
-        session_id =  self.GET.get('session_id')
         player_id = self.GET.get('player_id')
+        game_id = self.GET.get('session_id') # TODO : session -> game
+
+        DB = Database()
+        DB.insert(mapping={"id": player_id}, relation="player")
+        DB.insert(mapping={"id": game_id, "player": player_id, "network_code": code}, relation="game")
 
         network_config = utils.get_network_config(code)
         network_name = network_config["name"]
-        
         G = utils.read_sample(f"network_data/empirical/{network_name}.gml")
-
         network_detail = {
             "nodes": utils.G_nodes(G), "links": utils.G_links(G), 
         }
@@ -53,18 +50,19 @@ class SeekerDismantle(Page):
     @csrf_exempt
     def node_ranking(self) -> Type[JsonResponse]:
         data = json.loads(self.body)
-        print(data.keys())
-        gData, tool_id = data.get('graphData'), data.get('chosen_tool_id')
-        print("tool_id", tool_id)
+        tool_id = data.get('chosen_tool_id')
+        round_id = data.get('roundId') 
+        game_id = data.get('gameId') 
+        round_number = data.get('round')
+        
+        DB = Database()
+        DB.insert(mapping={
+            "id": round_id, "game": game_id, 
+            "tool_id": tool_id, "round_number": round_number, 
+        }, relation="round")
 
+        gData = data.get('graphData')
         G = utils.parse_network(gData)
-
-        # TODO: implement store tool to database
-        session_id =  data.get('session_id')
-        player_id = data.get('player_id')
-        code = data.get('chosen_network_id')
-        round_number = data.get('round_number')
-
         G = utils.parse_network(gData)
         tool = utils.get_tool_config(tool_id)['name']
         if tool == "NO_HELP":
@@ -79,19 +77,19 @@ class SeekerDismantle(Page):
     
     @csrf_exempt
     def payoff(self) -> Type[JsonResponse]:
-        gData, tool = self.GET.get('gData'), self.GET.get('tool')
+        gData = self.GET.get('gData')
         netword_id = str(self.GET.get('netword_id'))
+        round_id = str(self.GET.get('roundId'))
         sol = str(self.GET.get('sol'))
         G = utils.parse_network(gData)
         
-        payoff_in_round = utils.getRobustness(gData, netword_id, sol)
-        # TODO: implement accumulate payoff from round 1
-        human_payoff = float()
-
-        # TODO: implement finder payoff computation
-        finder_payoff = [float() for _ in range(5)]
-
+        human_payoff = utils.getRobustness(gData, netword_id, sol)
+        finder_payoff = float() # TODO: implement finder payoff computation
         isEnd = utils.gameEnd(gData, sol)
+        
+        DB = Database()
+        # TODO: insert FINDER payoff
+        DB.update({"chosen_node": sol,"human_payoff": human_payoff}, relation="round", pk=round_id)
 
         return JsonResponse({
             "human_payoff": human_payoff, 
@@ -100,6 +98,3 @@ class SeekerDismantle(Page):
         }, status=status.HTTP_200_OK)
 
 page_sequence = [GameStart]
-
-# https://github.com/oTree-org/otree-docs
-# https://github.com/oTree-org/otree-core
