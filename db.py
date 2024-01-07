@@ -43,7 +43,7 @@ class Database:
     def execute(self, sql: str) -> List:
         return self.cursor.execute(sql)
 
-    @__build_connection
+    # @__build_connection
     def create_new_table(self) -> None:
         # Define the SQL command to create a new table with the desired schema
         table_schema = {
@@ -94,21 +94,25 @@ class Database:
 
     @__build_connection
     def insert(self, mapping: Dict, relation: str) -> None:
-        assert relation in self.existing_relation.keys(), AssertionError("Relation not exist. ")
+        if relation not in self.existing_relation.keys():
+            self.create_new_table()
+        # assert relation in self.existing_relation.keys(), AssertionError("Relation not exist. ")
         columns = ", ".join(mapping.keys())
         values = ", ".join([f"\'{val}\'" for val in mapping.values()])
         query = f"INSERT INTO {relation} ({columns}) VALUES ({values})"
         try:
             self.__execute(query)
             self.connection.commit()
-            # print(f"Insertion success. ")
-            # print(f"Query: {query}\n")
+            print(f"Insertion success. ")
+            print(f"Query: {query}\n")
         except:
             print(f"Insertion failed. ")
     
     @__build_connection
     def update(self, mapping: Dict, relation: str, pk: str) -> None:
-        assert relation in self.existing_relation.keys(), AssertionError("Relation not exist. ")
+        if relation not in self.existing_relation.keys():
+            self.create_new_table()
+        # assert relation in self.existing_relation.keys(), AssertionError("Relation not exist. ")
         content = ", ".join([f"{key} = '{val}'" for key, val in mapping.items()])
         query = f"UPDATE {relation} SET {content} WHERE id = '{pk}';"
 
