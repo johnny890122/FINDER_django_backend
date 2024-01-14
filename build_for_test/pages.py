@@ -90,8 +90,8 @@ class SeekerDismantle(Page):
         isEnd = utils.gameEnd(gData, sol)
         
         DB = Database()
-        # TODO: insert FINDER payoff
-        DB.update({"chosen_node": sol,"human_payoff": human_payoff}, relation="round", pk=round_id)
+        # TODO: insert FINDER payoff and human payoff
+        DB.update({"chosen_node": sol}, relation="round", pk=round_id)
 
         return JsonResponse({
             "human_payoff": human_payoff, 
