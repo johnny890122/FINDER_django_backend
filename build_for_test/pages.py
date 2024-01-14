@@ -77,10 +77,12 @@ class SeekerDismantle(Page):
     
     @csrf_exempt
     def payoff(self) -> Type[JsonResponse]:
-        gData = self.GET.get('gData')
-        netword_id = str(self.GET.get('netword_id'))
-        round_id = str(self.GET.get('roundId'))
-        sol = str(self.GET.get('sol'))
+        data = json.loads(self.body)
+        netword_id = data.get('chosen_network_id')
+        round_id = data.get('round_id')
+        sol = data.get('chosen_node_id')
+        
+        gData = data.get('graphData')
         G = utils.parse_network(gData)
         
         human_payoff = utils.getRobustness(gData, netword_id, sol)
