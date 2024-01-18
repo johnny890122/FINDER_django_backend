@@ -52,17 +52,15 @@ class SeekerDismantle(Page):
         data = json.loads(self.body)
         tool_id = data.get('chosen_tool_id')
         round_id = data.get('roundId') 
-        game_id = data.get('gameId') 
-        round_number = data.get('round')
+        game_id = data.get('gameId')
         
         DB = Database()
         DB.insert(mapping={
             "id": round_id, "game": game_id, 
-            "tool_id": tool_id, "round_number": round_number, 
+            "tool_id": tool_id, "round_number": round_id, 
         }, relation="round")
 
         gData = data.get('graphData')
-        G = utils.parse_network(gData)
         G = utils.parse_network(gData)
         tool = utils.get_tool_config(tool_id)['name']
         if tool == "NO_HELP":
