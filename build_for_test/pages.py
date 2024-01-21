@@ -21,9 +21,9 @@ class GameStart(Page):
         player_id = self.GET.get('player_id')
         game_id = self.GET.get('session_id') # TODO : session -> game
 
-        DB = Database()
-        DB.insert(mapping={"id": player_id}, relation="player")
-        DB.insert(mapping={"id": game_id, "player": player_id, "network_code": code}, relation="game")
+        # DB = Database()
+        # DB.insert(mapping={"id": player_id}, relation="player")
+        # DB.insert(mapping={"id": game_id, "player": player_id, "network_code": code}, relation="game")
 
         network_config = utils.get_network_config(code)
         network_name = network_config["name"]
@@ -55,11 +55,11 @@ class SeekerDismantle(Page):
         game_id = data.get('gameId') 
         round_number = data.get('round')
         
-        DB = Database()
-        DB.insert(mapping={
-            "id": round_id, "game": game_id, 
-            "tool_id": tool_id, "round_number": round_number, 
-        }, relation="round")
+        # DB = Database()
+        # DB.insert(mapping={
+        #     "id": round_id, "game": game_id, 
+        #     "tool_id": tool_id, "round_number": round_number, 
+        # }, relation="round")
 
         gData = data.get('graphData')
         G = utils.parse_network(gData)
@@ -69,27 +69,29 @@ class SeekerDismantle(Page):
             ranking = {}
         elif tool == "FINDER":
             # TODO: implement finder
-            pass 
+            ranking = {}
         else:
             ranking = utils.hxa_ranking(G, criteria=tool)
 
+        print(ranking)
         return JsonResponse(ranking, status=status.HTTP_200_OK)
     
     @csrf_exempt
     def payoff(self) -> Type[JsonResponse]:
-        gData = self.GET.get('gData')
-        netword_id = str(self.GET.get('netword_id'))
-        round_id = str(self.GET.get('roundId'))
-        sol = str(self.GET.get('sol'))
+        data = json.loads(self.body)
+        gData = data.get('graphData')
+        netword_id = str(data.get('chosen_network_id'))
+        round_id = str(data.get('roundId'))
+        sol = str(data.get('chosen_node_id'))
         G = utils.parse_network(gData)
         
         human_payoff = utils.getRobustness(gData, netword_id, sol)
         finder_payoff = float() # TODO: implement finder payoff computation
         isEnd = utils.gameEnd(gData, sol)
         
-        DB = Database()
+        # DB = Database()
         # TODO: insert FINDER payoff
-        DB.update({"chosen_node": sol,"human_payoff": human_payoff}, relation="round", pk=round_id)
+        # DB.update({"chosen_node": sol, "payoff": human_payoff}, relation="round", pk=round_id)
 
         return JsonResponse({
             "human_payoff": human_payoff, 
