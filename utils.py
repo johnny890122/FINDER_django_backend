@@ -1,11 +1,14 @@
 from typing import Type, List, Dict
 import networkx as nx
 from pathlib import Path
-import json
+import json, os, sys
 from io import BytesIO
+import numpy as np
+sys.path.append(os.path.dirname(__file__) + os.sep + './')
+from FINDER import FINDER
 
 def get_network_config(code: str=None) -> Dict:
-    with open('network_data/empirical/network_config.json', "r") as json_file:
+    with open('data/empirical/network_config.json', "r") as json_file:
         network_config = json.load(json_file)
     mapping_dct = {val["code"]: key for key, val in network_config.items()}
     if code is None or code not in mapping_dct.keys():
@@ -113,7 +116,7 @@ def G_nodes(G: Type[nx.Graph], criteria: str="NO_HELP") -> List[Dict[str, float]
 def G_links(G: Type[nx.Graph]) -> List[Dict[str, int]]:
     links = []
     for (i, j) in G.edges():
-        links.append({"source": i, "target": j})
+        links.append({"source": {"id": i}, "target": {"id": j}})
     
     # if len(list(nx.connected_components(G))) > 1:
     #     for CC in nx.connected_components(G):
@@ -150,16 +153,30 @@ def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:
     return ranking
 
 # TODO: implement finder ranking
-def finder_ranking(G: Type[nx.Graph], ):
-    content = BytesIO(get_gml_format(G).encode('utf-8'))
-    pass 
-    # model_file = f'./models/Model_EMPIRICAL/{player.in_round(1).playing_graph}.ckpt'
-    # _, sol = dqn.Evaluate(content, model_file)
+def finder_ranking(G: Type[nx.Graph], graph: str):
+    dqn = FINDER()
+    gData = get_gData(G)
+
+    G_content = BytesIO(get_gml_format(gData).encode('utf-8'))
+    model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
+    _, sol = dqn.Evaluate(G_content, model_file)
+    
+    sol = np.array(sol).astype(str)
+    ranking = {}
+
+    for i, node in enumerate(sol):
+        ranking[node] = i+1
+    
+    for node in G.nodes():
+        if node not in ranking.keys():
+            ranking[node] = len(sol)+1
+
+    return ranking
 
 def getRobustness(gData: Dict, network_id: str, sol: str) -> float:
     # load original network by network_id
     network_config = get_network_config(code=network_id)
-    path = Path(f"network_data/empirical/{network_config['name']}.gml")
+    path = Path(f"data/empirical/{network_config['name']}.gml")
     
     # compute robustness
     full_G = read_sample(path)
@@ -178,3 +195,13 @@ def gameEnd(gData: Dict, sol: str) -> bool:
     if GCC_size(G) == 1:
         return True
     return False
+
+
+if __name__ == "__main__":
+    G = read_sample(Path("data/empirical/911.gml"))
+    # tool = "HDA"
+    # a = hxa_ranking(G, criteria=tool)
+
+    a = finder_ranking(G, "911")
+    print(a)
+    
