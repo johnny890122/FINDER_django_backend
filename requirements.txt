@@ -1,11 +1,17 @@
-otree==3.4.0
-Django==2.2.12
-django-cors-headers==3.11.0
-requests==2.31.0
-djangorestframework==3.11.0
-networkx
-numpy
-scipy
-tensorflow==1.14.0
-protobuf==3.20
+# otree==3.4.0
+# Django==2.2.12
+# django-cors-headers==3.11.0
+# requests==2.31.0
+# djangorestframework==3.11.0
+
+# numpy
+# scipy
+# tensorflow==1.14.0
+# protobuf==3.20
+# tqdm
+cython==3.0.9
+tensorflow==2.16.1
+scipy==1.12.0
 tqdm
+pandas
+networkx
