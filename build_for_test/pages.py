@@ -7,7 +7,7 @@ from db import Database
 
 from django.views.decorators.csrf import csrf_exempt
 from typing import Type
-import utils, json
+import build_for_test.utils as utils, json
 
 class GameStart(Page):
     @csrf_exempt
@@ -27,7 +27,8 @@ class GameStart(Page):
 
         network_config = utils.get_network_config(code)
         network_name = network_config["name"]
-        G = utils.read_sample(f"network_data/empirical/{network_name}.gml")
+        G = utils.read_sample(f"data/empirical/{network_name}.gml")
+
         network_detail = {
             "nodes": utils.G_nodes(G), "links": utils.G_links(G), 
         }
@@ -54,7 +55,7 @@ class SeekerDismantle(Page):
         round_id = data.get('roundId') 
         game_id = data.get('gameId') 
         round_number = data.get('round')
-        network_id = data.get('chosen_network_id')
+        # network_id = data.get('chosen_network_id')
         # DB = Database()
         # DB.insert(mapping={
         #     "id": round_id, "game": game_id, 
@@ -63,14 +64,15 @@ class SeekerDismantle(Page):
 
         gData = data.get('graphData')
         G = utils.parse_network(gData)
-        graph_name = utils.get_network_config(network_id)["name"]
+        # graph_name = utils.get_network_config(network_id)["name"]
         tool = utils.get_tool_config(tool_id)['name']
 
         if tool == "NO_HELP":
             ranking = {}
         elif tool == "FINDER":
             # TODO: implement finder
-            ranking = utils.finder_ranking(G, graph=graph_name)
+            # ranking = utils.finder_ranking(G, graph=graph_name)
+            pass 
         else:
             ranking = utils.hxa_ranking(G, criteria=tool)
 

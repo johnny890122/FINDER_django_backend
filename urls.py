@@ -14,10 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from otree.urls import urlpatterns
 from build_for_test.pages import GameStart, SeekerDismantle
 
-urlpatterns += [
+urlpatterns = [
     path('networks/', GameStart.network_config), 
     path('game_start/', GameStart.game_start), 
     path('tools/', SeekerDismantle.get_tools),
