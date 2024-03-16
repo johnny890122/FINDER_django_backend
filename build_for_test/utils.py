@@ -4,13 +4,14 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
-sys.path.append(os.path.dirname(__file__) + os.sep + './')
 from FINDER import FINDER
 
 def get_network_config(code: str=None) -> Dict:
+    code = str(code)
     with open('data/empirical/network_config.json', "r") as json_file:
         network_config = json.load(json_file)
     mapping_dct = {val["code"]: key for key, val in network_config.items()}
+    # print(code, mapping_dct.keys())
     if code is None or code not in mapping_dct.keys():
         return network_config
     else:
@@ -45,8 +46,10 @@ def parse_network(network_detail: Dict[str, list]) -> Type[nx.Graph]:
 
     # Add edges to the graph
     for link in network_detail['links']:
-        G.add_edge(link['source']["id"], link['target']["id"])
-
+        if type(link["source"]) == dict and type(link["target"]) == dict:
+            link["source"] = link["source"]["id"]
+            link["target"] = link["target"]["id"]
+        G.add_edge(link['source'], link['target'])
     return G
 
 def get_gData(G: nx.Graph) -> Dict:
@@ -116,7 +119,8 @@ def G_nodes(G: Type[nx.Graph], criteria: str="NO_HELP") -> List[Dict[str, float]
 def G_links(G: Type[nx.Graph]) -> List[Dict[str, int]]:
     links = []
     for (i, j) in G.edges():
-        links.append({"source": {"id": i}, "target": {"id": j}})
+        # links.append({"source": {"id": i}, "target": {"id": j}})
+        links.append({"source": i, "target": j})
     
     # if len(list(nx.connected_components(G))) > 1:
     #     for CC in nx.connected_components(G):
@@ -181,7 +185,6 @@ def getRobustness(gData: Dict, network_id: str, sol: str) -> float:
     # compute robustness
     full_G = read_sample(path)
     fullGCCsize = GCC_size(full_G)
-
     G = parse_network(gData)
     G = remove_node(G, node=sol)
     remainGCCsize = GCC_size(G)
