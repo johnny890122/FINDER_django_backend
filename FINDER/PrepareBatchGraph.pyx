@@ -122,7 +122,7 @@ cdef class py_PrepareBatchGraph:
         rowNum= matrix.rowNum
         colNum= matrix.colNum
         indices = np.mat([rowIndex, colIndex]).transpose()
-        return tf.SparseTensorValue(indices, data, (rowNum,colNum))
+        return tf.compat.v1.SparseTensorValue(indices, data, (rowNum,colNum))
 
 
 

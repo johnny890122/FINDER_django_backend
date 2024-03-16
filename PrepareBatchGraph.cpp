@@ -2310,6 +2310,7 @@ static const char __pyx_k__2[] = ".";
 static const char __pyx_k_gc[] = "gc";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_tf[] = "tf";
+static const char __pyx_k_v1[] = "v1";
 static const char __pyx_k__13[] = "?";
 static const char __pyx_k_mat[] = "mat";
 static const char __pyx_k_main[] = "__main__";
@@ -2321,6 +2322,7 @@ static const char __pyx_k_graph[] = "graph";
 static const char __pyx_k_idxes[] = "idxes";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_compat[] = "compat";
 static const char __pyx_k_enable[] = "enable";
 static const char __pyx_k_g_list[] = "g_list";
 static const char __pyx_k_import[] = "__import__";
@@ -2461,6 +2463,7 @@ typedef struct {
   PyObject *__pyx_n_s_aggregatorID;
   PyObject *__pyx_n_s_asyncio_coroutines;
   PyObject *__pyx_n_s_cline_in_traceback;
+  PyObject *__pyx_n_s_compat;
   PyObject *__pyx_n_s_coo_matrix;
   PyObject *__pyx_n_s_covered;
   PyObject *__pyx_kp_u_disable;
@@ -2512,6 +2515,7 @@ typedef struct {
   PyObject *__pyx_n_s_test;
   PyObject *__pyx_n_s_tf;
   PyObject *__pyx_n_s_transpose;
+  PyObject *__pyx_n_s_v1;
   PyObject *__pyx_tuple__3;
   PyObject *__pyx_tuple__5;
   PyObject *__pyx_tuple__7;
@@ -2583,6 +2587,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_aggregatorID);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
+  Py_CLEAR(clear_module_state->__pyx_n_s_compat);
   Py_CLEAR(clear_module_state->__pyx_n_s_coo_matrix);
   Py_CLEAR(clear_module_state->__pyx_n_s_covered);
   Py_CLEAR(clear_module_state->__pyx_kp_u_disable);
@@ -2634,6 +2639,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_test);
   Py_CLEAR(clear_module_state->__pyx_n_s_tf);
   Py_CLEAR(clear_module_state->__pyx_n_s_transpose);
+  Py_CLEAR(clear_module_state->__pyx_n_s_v1);
   Py_CLEAR(clear_module_state->__pyx_tuple__3);
   Py_CLEAR(clear_module_state->__pyx_tuple__5);
   Py_CLEAR(clear_module_state->__pyx_tuple__7);
@@ -2683,6 +2689,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_aggregatorID);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
+  Py_VISIT(traverse_module_state->__pyx_n_s_compat);
   Py_VISIT(traverse_module_state->__pyx_n_s_coo_matrix);
   Py_VISIT(traverse_module_state->__pyx_n_s_covered);
   Py_VISIT(traverse_module_state->__pyx_kp_u_disable);
@@ -2734,6 +2741,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_test);
   Py_VISIT(traverse_module_state->__pyx_n_s_tf);
   Py_VISIT(traverse_module_state->__pyx_n_s_transpose);
+  Py_VISIT(traverse_module_state->__pyx_n_s_v1);
   Py_VISIT(traverse_module_state->__pyx_tuple__3);
   Py_VISIT(traverse_module_state->__pyx_tuple__5);
   Py_VISIT(traverse_module_state->__pyx_tuple__7);
@@ -2811,6 +2819,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_aggregatorID __pyx_mstate_global->__pyx_n_s_aggregatorID
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
+#define __pyx_n_s_compat __pyx_mstate_global->__pyx_n_s_compat
 #define __pyx_n_s_coo_matrix __pyx_mstate_global->__pyx_n_s_coo_matrix
 #define __pyx_n_s_covered __pyx_mstate_global->__pyx_n_s_covered
 #define __pyx_kp_u_disable __pyx_mstate_global->__pyx_kp_u_disable
@@ -2862,6 +2871,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_test __pyx_mstate_global->__pyx_n_s_test
 #define __pyx_n_s_tf __pyx_mstate_global->__pyx_n_s_tf
 #define __pyx_n_s_transpose __pyx_mstate_global->__pyx_n_s_transpose
+#define __pyx_n_s_v1 __pyx_mstate_global->__pyx_n_s_v1
 #define __pyx_tuple__3 __pyx_mstate_global->__pyx_tuple__3
 #define __pyx_tuple__5 __pyx_mstate_global->__pyx_tuple__5
 #define __pyx_tuple__7 __pyx_mstate_global->__pyx_tuple__7
@@ -6480,7 +6490,7 @@ static PyObject *__pyx_f_17PrepareBatchGraph_20py_PrepareBatchGraph_ConvertSpars
  *         rowNum= matrix.rowNum
  *         colNum= matrix.colNum             # <<<<<<<<<<<<<<
  *         indices = np.mat([rowIndex, colIndex]).transpose()
- *         return tf.SparseTensorValue(indices, data, (rowNum,colNum))
+ *         return tf.compat.v1.SparseTensorValue(indices, data, (rowNum,colNum))
  */
   __pyx_t_3 = __pyx_v_matrix.colNum;
   __pyx_v_colNum = __pyx_t_3;
@@ -6489,7 +6499,7 @@ static PyObject *__pyx_f_17PrepareBatchGraph_20py_PrepareBatchGraph_ConvertSpars
  *         rowNum= matrix.rowNum
  *         colNum= matrix.colNum
  *         indices = np.mat([rowIndex, colIndex]).transpose()             # <<<<<<<<<<<<<<
- *         return tf.SparseTensorValue(indices, data, (rowNum,colNum))
+ *         return tf.compat.v1.SparseTensorValue(indices, data, (rowNum,colNum))
  * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 124, __pyx_L1_error)
@@ -6563,13 +6573,19 @@ static PyObject *__pyx_f_17PrepareBatchGraph_20py_PrepareBatchGraph_ConvertSpars
   /* "PrepareBatchGraph.pyx":125
  *         colNum= matrix.colNum
  *         indices = np.mat([rowIndex, colIndex]).transpose()
- *         return tf.SparseTensorValue(indices, data, (rowNum,colNum))             # <<<<<<<<<<<<<<
+ *         return tf.compat.v1.SparseTensorValue(indices, data, (rowNum,colNum))             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_tf); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_compat); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 125, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_v1); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 125, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_SparseTensorValue); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -6590,7 +6606,7 @@ static PyObject *__pyx_f_17PrepareBatchGraph_20py_PrepareBatchGraph_ConvertSpars
   __pyx_t_8 = NULL;
   __pyx_t_3 = 0;
   #if CYTHON_UNPACK_METHODS
-  if (unlikely(PyMethod_Check(__pyx_t_5))) {
+  if (likely(PyMethod_Check(__pyx_t_5))) {
     __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
     if (likely(__pyx_t_8)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
@@ -7268,6 +7284,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_aggregatorID, __pyx_k_aggregatorID, sizeof(__pyx_k_aggregatorID), 0, 0, 1, 1},
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+    {&__pyx_n_s_compat, __pyx_k_compat, sizeof(__pyx_k_compat), 0, 0, 1, 1},
     {&__pyx_n_s_coo_matrix, __pyx_k_coo_matrix, sizeof(__pyx_k_coo_matrix), 0, 0, 1, 1},
     {&__pyx_n_s_covered, __pyx_k_covered, sizeof(__pyx_k_covered), 0, 0, 1, 1},
     {&__pyx_kp_u_disable, __pyx_k_disable, sizeof(__pyx_k_disable), 0, 1, 0, 0},
@@ -7319,6 +7336,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
     {&__pyx_n_s_tf, __pyx_k_tf, sizeof(__pyx_k_tf), 0, 0, 1, 1},
     {&__pyx_n_s_transpose, __pyx_k_transpose, sizeof(__pyx_k_transpose), 0, 0, 1, 1},
+    {&__pyx_n_s_v1, __pyx_k_v1, sizeof(__pyx_k_v1), 0, 0, 1, 1},
     {0, 0, 0, 0, 0, 0, 0}
   };
   return __Pyx_InitStrings(__pyx_string_tab);

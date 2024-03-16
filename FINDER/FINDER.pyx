@@ -25,7 +25,6 @@ import os
 import warnings
 from simulator import CovertGenerator, DarkGenerator, fintuing_realG_generator
 warnings.filterwarnings("ignore", category=FutureWarning)
-# import pandas as pd
 
 # Hyper Parameters:
 cdef double GAMMA = 1  # decay rate of past observations
