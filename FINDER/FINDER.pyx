@@ -23,7 +23,7 @@ import mvc_env
 import utils
 import os
 import warnings
-from simulator import CovertGenerator, DarkGenerator, fintuing_realG_generator
+# from simulator import CovertGenerator, DarkGenerator, fintuing_realG_generator
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 # Hyper Parameters:
@@ -352,18 +352,19 @@ class FINDER:
             g = nx.connected_watts_strogatz_graph(n=cur_n, k=8, p=0.1)
         elif self.g_type == 'barabasi_albert':
             g = nx.barabasi_albert_graph(n=cur_n, m= max(int(DENSITY*cur_n*(cur_n-1)/(2*cur_n)), 1))
-        elif self.g_type == "dark":
-            generator = DarkGenerator(min_n=num_min, max_n=num_max, density=DENSITY)
-            generator.simulate()
-            g = generator.G
-        elif self.g_type == "covert":
-            generator = CovertGenerator(min_n=num_min, max_n=num_max, density=DENSITY)
-            generator.simulate()
-            g = generator.G
-        elif self.g_type == "EMPIRICAL":
-            # g = nx.barabasi_albert_graph(n=cur_n, m=1)
-            g = fintuing_realG_generator("./empirical_data/", self.empirical_data)
+        # elif self.g_type == "dark":
+        #     generator = DarkGenerator(min_n=num_min, max_n=num_max, density=DENSITY)
+        #     generator.simulate()
+        #     g = generator.G
+        # elif self.g_type == "covert":
+        #     generator = CovertGenerator(min_n=num_min, max_n=num_max, density=DENSITY)
+        #     generator.simulate()
+        #     g = generator.G
+        # elif self.g_type == "EMPIRICAL":
+        #     # g = nx.barabasi_albert_graph(n=cur_n, m=1)
+        #     g = fintuing_realG_generator("./empirical_data/", self.empirical_data)
         return g
+    
     def gen_new_graphs(self, num_min, num_max):
         print('\ngenerating new training graphs...')
         sys.stdout.flush()
