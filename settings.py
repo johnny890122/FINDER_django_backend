@@ -1,4 +1,7 @@
-from os import environ
+import django_heroku
+from pathlib import Path
+import os
+import dj_database_url
 
 SESSION_CONFIGS = [
     dict(
@@ -18,6 +21,10 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
+DATABASES = {
+    'default': dj_database_url.config(),
+}
+
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
 LANGUAGE_CODE = 'en'
@@ -28,7 +35,7 @@ USE_POINTS = True
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+ADMIN_PASSWORD = os.environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """
 Here are some oTree games.
@@ -37,9 +44,6 @@ Here are some oTree games.
 
 SECRET_KEY = 'qr1jdvo2&&!4&db(8ea++y^(np687zxj!dg$j3r14!4+44&u%&'
 
-
-from pathlib import Path
-import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -152,3 +156,4 @@ CORS_ALLOW_ALL_ORIGIN=True
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = False
+django_heroku.settings(locals())

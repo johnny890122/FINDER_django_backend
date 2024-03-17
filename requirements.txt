@@ -18,3 +18,7 @@ networkx
 Django==5.0.3
 django-cors-headers==4.3.1
 djangorestframework==3.14.0
+otree
+gunicorn
+django-heroku
+dj_static
