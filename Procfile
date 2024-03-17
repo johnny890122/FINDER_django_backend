@@ -1,1 +1,1 @@
-web: gunicorn FINDER_django_backend.wsgi
+web: gunicorn game.wsgi --log-file -
