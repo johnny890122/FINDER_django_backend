@@ -4,7 +4,7 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
-from .FINDER import FINDER
+import FINDER
 
 def get_network_config(code: str=None) -> Dict:
     code = str(code)
