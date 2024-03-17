@@ -16,12 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from game.api import GameStart, SeekerDismantle
+import game.api as api
 
 urlpatterns = [
-    path('networks/', GameStart.network_config), 
-    path('game_start/', GameStart.game_start), 
-    path('tools/', SeekerDismantle.get_tools),
-    path('node_ranking/', SeekerDismantle.node_ranking),
-    path('payoff/', SeekerDismantle.payoff),
+    path('networks/', api.network_config), 
+    path('game_start/', api.game_start), 
+    path('tools/', api.get_tools),
+    path('node_ranking/', api.node_ranking),
+    path('payoff/', api.payoff),
 ]
