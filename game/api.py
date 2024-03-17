@@ -10,10 +10,11 @@ import os
 
 from typing import Type, List, Dict
 from io import BytesIO
-import pyximport
+import sys
 
 # pyximport.install()
-from game.FINDER import FINDER
+sys.path.append(os.path.dirname(__file__) + os.sep + './')
+from FINDER import FINDER
 dqn = FINDER()
 
 def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
