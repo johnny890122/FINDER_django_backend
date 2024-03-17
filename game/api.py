@@ -5,13 +5,13 @@ import networkx as nx
 # from db import Database
 from django.views.decorators.csrf import csrf_exempt
 from typing import Type
-import game.utils as utils, json
+import game.util as util, json
 import os
 
 class GameStart():
     @csrf_exempt
     def network_config(self):
-        network_config = utils.get_network_config()
+        network_config = util.get_network_config()
         return JsonResponse(network_config, status=status.HTTP_200_OK)
     
     @csrf_exempt
@@ -24,13 +24,13 @@ class GameStart():
         # DB.insert(mapping={"id": player_id}, relation="player")
         # DB.insert(mapping={"id": game_id, "player": player_id, "network_code": code}, relation="game")
 
-        network_config = utils.get_network_config(code)
+        network_config = util.get_network_config(code)
         network_name = network_config["name"]
         print(os.getcwd())
-        G = utils.read_sample(f"game/data/empirical/{network_name}.gml")
+        G = util.read_sample(f"data/empirical/{network_name}.gml")
 
         network_detail = {
-            "nodes": utils.G_nodes(G), "links": utils.G_links(G), 
+            "nodes": util.G_nodes(G), "links": util.G_links(G), 
         }
 
         return JsonResponse(network_detail, status=status.HTTP_200_OK)       
@@ -44,7 +44,7 @@ class SeekerDismantle():
             tool_id = None
 
         return JsonResponse(
-            utils.get_tool_config(tool_id), 
+            util.get_tool_config(tool_id), 
             status=status.HTTP_200_OK
         )
 
@@ -63,17 +63,16 @@ class SeekerDismantle():
         # }, relation="round")
 
         gData = data.get('graphData')
-        G = utils.parse_network(gData)
-        graph_name = utils.get_network_config(network_id)["name"]
-        tool = utils.get_tool_config(tool_id)['name']
+        G = util.parse_network(gData)
+        graph_name = util.get_network_config(network_id)["name"]
+        tool = util.get_tool_config(tool_id)['name']
 
         if tool == "NO_HELP":
             ranking = {}
         elif tool == "FINDER":
-            # ranking = utils.finder_ranking(G, graph=graph_name)
-            ranking = {}
+            ranking = util.finder_ranking(G, graph=graph_name)
         else:
-            ranking = utils.hxa_ranking(G, criteria=tool)
+            ranking = util.hxa_ranking(G, criteria=tool)
 
         return JsonResponse(ranking, status=status.HTTP_200_OK)
     
@@ -84,11 +83,11 @@ class SeekerDismantle():
         netword_id = str(data.get('chosen_network_id'))
         round_id = str(data.get('roundId'))
         sol = str(data.get('chosen_node_id'))
-        G = utils.parse_network(gData)
+        G = util.parse_network(gData)
         
-        human_payoff = utils.getRobustness(gData, netword_id, sol)
+        human_payoff = util.getRobustness(gData, netword_id, sol)
         finder_payoff = float() # TODO: implement finder payoff computation
-        isEnd = utils.gameEnd(gData, sol)
+        isEnd = util.gameEnd(gData, sol)
         
         # DB = Database()
         # TODO: insert FINDER payoff

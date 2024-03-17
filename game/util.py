@@ -4,11 +4,11 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
-# from FINDER import FINDER
+from .FINDER import FINDER
 
 def get_network_config(code: str=None) -> Dict:
     code = str(code)
-    with open('game/data/empirical/network_config.json', "r") as json_file:
+    with open('data/empirical/network_config.json', "r") as json_file:
         network_config = json.load(json_file)
     mapping_dct = {val["code"]: key for key, val in network_config.items()}
     # print(code, mapping_dct.keys())
@@ -19,7 +19,7 @@ def get_network_config(code: str=None) -> Dict:
         return { **network_config[network_name], **{'name': network_name} }
 
 def get_tool_config(chosen_tool_id: str=None) -> Dict:
-    with open('game/_static/tool_config.json', "r") as json_file:
+    with open('_static/tool_config.json', "r") as json_file:
         tool_config = json.load(json_file)
     
     mapping_dct = {val["code"]: key for key, val in tool_config.items()}
@@ -142,7 +142,6 @@ def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:
             rank = node_lst.index(node) + 1
             current_centrality_val = node[criteria]
         ranking[node["id"]] = rank
-
     return ranking
 
 def gml_format(G: nx.Graph) -> str:
@@ -169,7 +168,7 @@ def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
 def getRobustness(gData: Dict, network_id: str, sol: str) -> float:
     # load original network by network_id
     network_config = get_network_config(code=network_id)
-    path = Path(f"game/data/empirical/{network_config['name']}.gml")
+    path = Path(f"data/empirical/{network_config['name']}.gml")
     
     # compute robustness
     full_G = read_sample(path)
