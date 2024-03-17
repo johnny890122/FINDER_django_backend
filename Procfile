@@ -1,1 +1,1 @@
-web: gunicorn wsgi
+web: gunicorn FINDER_django_backend.wsgi
