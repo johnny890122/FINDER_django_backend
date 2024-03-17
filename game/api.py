@@ -5,11 +5,10 @@ import networkx as nx
 # from db import Database
 from django.views.decorators.csrf import csrf_exempt
 from typing import Type
-import game.util as util, json
-import os
+import game.util as util
+import os, sys, json
 from typing import Type, List, Dict
 from io import BytesIO
-import sys
 
 def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
     G_content = BytesIO(util.gml_format(G).encode('utf-8'))

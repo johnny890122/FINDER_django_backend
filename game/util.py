@@ -4,8 +4,7 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
-
-import game.test.FINDER as FINDER
+import FINDER
 dqn = FINDER.FINDER()
 
 def get_network_config(code: str=None) -> Dict:
