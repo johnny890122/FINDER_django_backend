@@ -151,7 +151,7 @@ def gml_format(G: nx.Graph) -> str:
     return "\n".join([gml for gml in gml_generator])
 
 def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
-    dqn = FINDER()
+    dqn = FINDER.FINDER()
     G_content = BytesIO(gml_format(G).encode('utf-8'))
     model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
     _, sol = dqn.Evaluate(G_content, model_file)
