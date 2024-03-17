@@ -4,7 +4,7 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
-from FINDER import FINDER
+# from FINDER import FINDER
 
 def get_network_config(code: str=None) -> Dict:
     code = str(code)
@@ -51,16 +51,6 @@ def parse_network(network_detail: Dict[str, list]) -> Type[nx.Graph]:
             link["target"] = link["target"]["id"]
         G.add_edge(link['source'], link['target'])
     return G
-
-def get_gData(G: nx.Graph) -> Dict:
-    return {
-        "nodes": G_nodes(G), "links": G_links(G), 
-    }
-
-def get_gml_format(gData: Dict) -> str:
-    G = parse_network(gData)
-    gml_generator = nx.generate_gml(G) 
-    return "\n".join([gml for gml in gml_generator])
 
 def remove_node(G: Type[nx.Graph], node: str) -> Type[nx.Graph]:
     if node in G.nodes():
@@ -119,7 +109,6 @@ def G_nodes(G: Type[nx.Graph], criteria: str="NO_HELP") -> List[Dict[str, float]
 def G_links(G: Type[nx.Graph]) -> List[Dict[str, int]]:
     links = []
     for (i, j) in G.edges():
-        # links.append({"source": {"id": i}, "target": {"id": j}})
         links.append({"source": i, "target": j})
     
     # if len(list(nx.connected_components(G))) > 1:
@@ -156,24 +145,24 @@ def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:
 
     return ranking
 
-# TODO: implement finder ranking
-def finder_ranking(G: Type[nx.Graph], graph: str):
-    dqn = FINDER()
-    gData = get_gData(G)
+def gml_format(G: nx.Graph) -> str:
+    gData = {"nodes": G_nodes(G), "links": G_links(G)}
+    G = parse_network(gData)
+    gml_generator = nx.generate_gml(G) 
+    return "\n".join([gml for gml in gml_generator])
 
-    G_content = BytesIO(get_gml_format(gData).encode('utf-8'))
+def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
+    dqn = FINDER()
+    G_content = BytesIO(gml_format(G).encode('utf-8'))
     model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
     _, sol = dqn.Evaluate(G_content, model_file)
     
-    sol = np.array(sol).astype(str)
     ranking = {}
-
     for i, node in enumerate(sol):
-        ranking[node] = i+1
-    
+        ranking[str(node)] = i+1
     for node in G.nodes():
         if node not in ranking.keys():
-            ranking[node] = len(sol)+1
+            ranking[str(node)] = len(sol)+1
 
     return ranking
 
@@ -198,13 +187,4 @@ def gameEnd(gData: Dict, sol: str) -> bool:
     if GCC_size(G) == 1:
         return True
     return False
-
-
-if __name__ == "__main__":
-    G = read_sample(Path("data/empirical/911.gml"))
-    # tool = "HDA"
-    # a = hxa_ranking(G, criteria=tool)
-
-    a = finder_ranking(G, "911")
-    print(a)
     

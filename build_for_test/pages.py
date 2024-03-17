@@ -1,10 +1,8 @@
 from ._builtin import Page
-from otree.api import *
 from django.http import JsonResponse
 from rest_framework import status
 import networkx as nx
 from db import Database
-
 from django.views.decorators.csrf import csrf_exempt
 from typing import Type
 import build_for_test.utils as utils, json
@@ -55,7 +53,7 @@ class SeekerDismantle(Page):
         round_id = data.get('roundId') 
         game_id = data.get('gameId') 
         round_number = data.get('round')
-        # network_id = data.get('chosen_network_id')
+        network_id = data.get('chosen_network_id')
         # DB = Database()
         # DB.insert(mapping={
         #     "id": round_id, "game": game_id, 
@@ -64,15 +62,14 @@ class SeekerDismantle(Page):
 
         gData = data.get('graphData')
         G = utils.parse_network(gData)
-        # graph_name = utils.get_network_config(network_id)["name"]
+        graph_name = utils.get_network_config(network_id)["name"]
         tool = utils.get_tool_config(tool_id)['name']
 
         if tool == "NO_HELP":
             ranking = {}
         elif tool == "FINDER":
-            # TODO: implement finder
             # ranking = utils.finder_ranking(G, graph=graph_name)
-            pass 
+            ranking = {}
         else:
             ranking = utils.hxa_ranking(G, criteria=tool)
 
