@@ -11,7 +11,7 @@ import os
 from typing import Type, List, Dict
 from io import BytesIO
 
-from FINDER import FINDER
+from game.FINDER import FINDER
 dqn = FINDER()
 
 def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
