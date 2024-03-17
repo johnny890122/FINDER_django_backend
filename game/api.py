@@ -10,8 +10,8 @@ import os
 
 from typing import Type, List, Dict
 from io import BytesIO
-
-from game.FINDER import FINDER
+import pyximport
+cimport FINDER
 dqn = FINDER()
 
 def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
