@@ -7,21 +7,14 @@ from django.views.decorators.csrf import csrf_exempt
 from typing import Type
 import game.util as util, json
 import os
-
 from typing import Type, List, Dict
 from io import BytesIO
 import sys
 
-# pyximport.install()
-sys.path.append(os.path.dirname(__file__) + os.sep + './')
-from .FINDER import FINDER
-dqn = FINDER()
-
 def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
     G_content = BytesIO(util.gml_format(G).encode('utf-8'))
     model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
-    # with FINDER() as dqn:
-    _, sol = dqn.Evaluate(G_content, model_file)
+    _, sol = util.dqn.Evaluate(G_content, model_file)
     
     ranking = {}
     for i, node in enumerate(sol):

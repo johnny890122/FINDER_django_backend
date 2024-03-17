@@ -5,6 +5,9 @@ import json, os, sys
 from io import BytesIO
 import numpy as np
 
+import game.test.FINDER as FINDER
+dqn = FINDER.FINDER()
+
 def get_network_config(code: str=None) -> Dict:
     code = str(code)
     with open('data/empirical/network_config.json', "r") as json_file:
