@@ -11,3 +11,4 @@ otree
 gunicorn
 django-heroku
 dj_static
+whitenoise
