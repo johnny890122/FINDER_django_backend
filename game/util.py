@@ -5,8 +5,8 @@ import json, os, sys
 from io import BytesIO
 import numpy as np
 sys.path.append(os.path.dirname(__file__) + os.sep + './')
-# from FINDER import FINDER
-# dqn = FINDER()
+from FINDER import FINDER
+dqn = FINDER()
 
 def get_network_config(code: str=None) -> Dict:
     code = str(code)

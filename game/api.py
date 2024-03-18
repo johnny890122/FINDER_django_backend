@@ -90,8 +90,7 @@ def node_ranking(self) -> Type[JsonResponse]:
     if tool == "NO_HELP":
         ranking = {}
     elif tool == "FINDER":
-        # ranking = finder_ranking(G, graph=graph_name)
-        pass
+        ranking = finder_ranking(G, graph=graph_name)
     else:
         ranking = util.hxa_ranking(G, criteria=tool)
     
