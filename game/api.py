@@ -22,7 +22,10 @@ def finder_sol(G: Type[nx.Graph], graph: str):
     _, sols = util.dqn.Evaluate(G_content, model_file)
     for idx, sol in enumerate(sols):
         sols[idx] = reversed_mapping[str(sol)]
+    return sols
 
+def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict:
+    sols = finder_sol(G, graph)
     ranking = {}
     for i, node in enumerate(sols):
         ranking[str(node)] = i+1
