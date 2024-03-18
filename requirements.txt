@@ -1,5 +1,5 @@
 cython==3.0.9
-# tensorflow-cpu
+tensorflow-cpu
 scipy==1.12.0
 tqdm==4.66.2
 numpy==1.26.4
