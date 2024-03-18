@@ -4,8 +4,9 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
-import FINDER
-dqn = FINDER.FINDER()
+sys.path.append(os.path.dirname(__file__) + os.sep + './')
+# from FINDER import FINDER
+# dqn = FINDER()
 
 def get_network_config(code: str=None) -> Dict:
     code = str(code)
@@ -150,6 +151,21 @@ def gml_format(G: nx.Graph) -> str:
     G = parse_network(gData)
     gml_generator = nx.generate_gml(G) 
     return "\n".join([gml for gml in gml_generator])
+
+def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
+    dqn = FINDER.FINDER()
+    G_content = BytesIO(gml_format(G).encode('utf-8'))
+    model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
+    _, sol = dqn.Evaluate(G_content, model_file)
+    
+    ranking = {}
+    for i, node in enumerate(sol):
+        ranking[str(node)] = i+1
+    for node in G.nodes():
+        if node not in ranking.keys():
+            ranking[str(node)] = len(sol)+1
+
+    return ranking
 
 def getRobustness(gData: Dict, network_id: str, sol: str) -> float:
     # load original network by network_id
