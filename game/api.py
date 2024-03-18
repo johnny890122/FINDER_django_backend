@@ -9,8 +9,9 @@ import game.util as util
 import os, sys, json
 from typing import Type, List, Dict
 from io import BytesIO
+import numpy as np
 
-def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
+def finder_sol(G: Type[nx.Graph], graph: str):
     mapping = {node: str(idx) for idx, node in enumerate(G.nodes())}
     reversed_mapping = {str(idx): node for idx, node in enumerate(G.nodes())}
     reorder_G = nx.relabel_nodes(G, mapping, copy=False)
@@ -30,6 +31,14 @@ def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
             ranking[str(node)] = len(sols)+1
 
     return ranking
+
+def finderRobustness(gData: Dict, graph: str) -> List[float]:
+    G = util.parse_network(gData) # TODO : payoff 的顯示問題
+    sols = finder_sol(G, graph)
+    payoff = []
+    for sol in sols:
+        payoff.append(util.getRobustness(gData, graph, sol))
+    return np.cumsum(payoff).tolist()
 
 @csrf_exempt
 def network_config(self):
@@ -100,13 +109,14 @@ def node_ranking(self) -> Type[JsonResponse]:
 def payoff(self) -> Type[JsonResponse]:
     data = json.loads(self.body)
     gData = data.get('graphData')
-    netword_id = str(data.get('chosen_network_id'))
+    network_id = data.get('chosen_network_id')
     round_id = str(data.get('roundId'))
     sol = str(data.get('chosen_node_id'))
     G = util.parse_network(gData)
     
-    human_payoff = util.getRobustness(gData, netword_id, sol)
-    finder_payoff = float() # TODO: implement finder payoff computation
+    graph_name = util.get_network_config(network_id)["name"]
+    human_payoff = util.getRobustness(gData, graph_name, sol)
+    finder_payoff = finderRobustness(gData, graph_name)
     isEnd = util.gameEnd(gData, sol)
     
     # DB = Database()

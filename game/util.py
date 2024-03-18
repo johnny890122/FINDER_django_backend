@@ -152,10 +152,8 @@ def gml_format(G: nx.Graph) -> str:
     gml_generator = nx.generate_gml(G) 
     return "\n".join([gml for gml in gml_generator])
 
-def getRobustness(gData: Dict, network_id: str, sol: str) -> float:
-    # load original network by network_id
-    network_config = get_network_config(code=network_id)
-    path = Path(f"data/empirical/{network_config['name']}.gml")
+def getRobustness(gData: Dict, graph: str, sol: str) -> float:
+    path = Path(f"data/empirical/{graph}.gml")
     
     # compute robustness
     full_G = read_sample(path)
