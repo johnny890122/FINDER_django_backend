@@ -11,16 +11,23 @@ from typing import Type, List, Dict
 from io import BytesIO
 
 def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
-    G_content = BytesIO(util.gml_format(G).encode('utf-8'))
+    mapping = {node: str(idx) for idx, node in enumerate(G.nodes())}
+    reversed_mapping = {str(idx): node for idx, node in enumerate(G.nodes())}
+    reorder_G = nx.relabel_nodes(G, mapping, copy=False)
+
+    G_content = BytesIO(util.gml_format(reorder_G).encode('utf-8'))
     model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
-    _, sol = util.dqn.Evaluate(G_content, model_file)
-    
+
+    _, sols = util.dqn.Evaluate(G_content, model_file)
+    for idx, sol in enumerate(sols):
+        sols[idx] = reversed_mapping[str(sol)]
+
     ranking = {}
-    for i, node in enumerate(sol):
+    for i, node in enumerate(sols):
         ranking[str(node)] = i+1
     for node in G.nodes():
         if node not in ranking.keys():
-            ranking[str(node)] = len(sol)+1
+            ranking[str(node)] = len(sols)+1
 
     return ranking
 
@@ -41,7 +48,6 @@ def game_start(self):
 
     network_config = util.get_network_config(code)
     network_name = network_config["name"]
-    print(os.getcwd())
     G = util.read_sample(f"data/empirical/{network_name}.gml")
 
     network_detail = {
@@ -85,10 +91,10 @@ def node_ranking(self) -> Type[JsonResponse]:
         ranking = {}
     elif tool == "FINDER":
         # ranking = finder_ranking(G, graph=graph_name)
-        ranking = {}
+        pass
     else:
         ranking = util.hxa_ranking(G, criteria=tool)
-
+    
     return JsonResponse(ranking, status=status.HTTP_200_OK)
 
 @csrf_exempt

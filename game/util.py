@@ -152,21 +152,6 @@ def gml_format(G: nx.Graph) -> str:
     gml_generator = nx.generate_gml(G) 
     return "\n".join([gml for gml in gml_generator])
 
-def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict[str, int]:
-    dqn = FINDER.FINDER()
-    G_content = BytesIO(gml_format(G).encode('utf-8'))
-    model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
-    _, sol = dqn.Evaluate(G_content, model_file)
-    
-    ranking = {}
-    for i, node in enumerate(sol):
-        ranking[str(node)] = i+1
-    for node in G.nodes():
-        if node not in ranking.keys():
-            ranking[str(node)] = len(sol)+1
-
-    return ranking
-
 def getRobustness(gData: Dict, network_id: str, sol: str) -> float:
     # load original network by network_id
     network_config = get_network_config(code=network_id)
