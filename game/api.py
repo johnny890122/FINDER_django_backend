@@ -116,7 +116,8 @@ def payoff(self) -> Type[JsonResponse]:
     
     graph_name = util.get_network_config(network_id)["name"]
     human_payoff = util.getRobustness(gData, graph_name, sol)
-    finder_payoff = finderRobustness(gData, graph_name)
+    finder_payoff = [0.1, 0.2, 0.3, 0.4, 0.5]
+    # finderRobustness(gData, graph_name)
     isEnd = util.gameEnd(gData, sol)
     
     # DB = Database()

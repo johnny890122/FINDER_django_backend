@@ -48,8 +48,9 @@ def parse_network(network_detail: Dict[str, list]) -> Type[nx.Graph]:
 
     # Add edges to the graph
     for link in network_detail['links']:
-        if type(link["source"]) == dict and type(link["target"]) == dict:
+        if type(link["source"]) == dict:
             link["source"] = link["source"]["id"]
+        if type(link["target"]) == dict:
             link["target"] = link["target"]["id"]
         G.add_edge(link['source'], link['target'])
     return G
