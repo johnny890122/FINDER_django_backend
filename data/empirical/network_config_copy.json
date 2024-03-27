@@ -26,5 +26,19 @@
         "introduction": "2001年左右，隱藏於德國漢堡市的蓋達恐怖組織",
         "node": "恐怖份子",
         "link": "熟識或合作關係"
+    },
+    "DOMESTICTERRORWEB": {
+        "code": "4",
+        "displayName": "Domestic Terrorist Web Links",
+        "introduction": "美國境內恐怖份子團體的網站",
+        "node": "網站",
+        "link": "網站之間的超連結（hyperlink）"
+    },
+    "suicide": {
+        "code": "5",
+        "displayName": "Global suicide attacks",
+        "introduction": "1986 至2005年之間，全球自殺攻擊的恐怖組織",
+        "node": "恐怖攻擊組織",
+        "link": "熟識或合作關係"
     }
 }
