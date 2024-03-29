@@ -169,7 +169,7 @@ def gameEnd(gData: Dict, sol: str) -> bool:
     G = parse_network(gData)
     G = remove_node(G, sol)
     
-    if GCC_size(G) == 1:
+    if len(G.edges()) == 0:
         return True
     return False
     
