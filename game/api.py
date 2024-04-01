@@ -1,16 +1,13 @@
-# from .build_for_test._builtin import Page
 from django.http import JsonResponse
-from rest_framework import status
-import networkx as nx
-# from db import Database
 from django.views.decorators.csrf import csrf_exempt
-from typing import Type
-import game.util as util
+from rest_framework import status
+import numpy as np
+import networkx as nx
 import os, sys, json
 from typing import Type, List, Dict
 from io import BytesIO
-import numpy as np
-from . import models
+import models
+import game.util as util
 
 def finder_sol(G: Type[nx.Graph], graph: str):
     mapping = {node: str(idx) for idx, node in enumerate(G.nodes())}
