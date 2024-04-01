@@ -10,6 +10,7 @@ import os, sys, json
 from typing import Type, List, Dict
 from io import BytesIO
 import numpy as np
+from . import models
 
 def finder_sol(G: Type[nx.Graph], graph: str):
     mapping = {node: str(idx) for idx, node in enumerate(G.nodes())}
@@ -50,21 +51,30 @@ def network_config(self):
 
 @csrf_exempt
 def game_start(self):
-    code = self.GET.get('chosen_network_id')
+    network_id = self.GET.get('chosen_network_id')
     player_id = self.GET.get('player_id')
     game_id = self.GET.get('session_id') # TODO : session -> game
 
-    # DB = Database()
-    # DB.insert(mapping={"id": player_id}, relation="player")
-    # DB.insert(mapping={"id": game_id, "player": player_id, "network_code": code}, relation="game")
-
-    network_config = util.get_network_config(code)
+    network_config = util.get_network_config(network_id)
     network_name = network_config["name"]
     G = util.read_sample(f"data/empirical/{network_name}.gml")
 
     network_detail = {
         "nodes": util.G_nodes(G), "links": util.G_links(G), 
     }
+    try:
+        models.Player(id=player_id).save()
+    except Exception as e:
+        print("Player", e)
+
+    try:
+        models.Game(
+            id=game_id, 
+            player = models.Player.objects.get(id=player_id), 
+            network=network_id
+        ).save()
+    except Exception as e:
+        print("Game", e)
 
     return JsonResponse(network_detail, status=status.HTTP_200_OK)       
 
