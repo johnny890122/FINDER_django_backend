@@ -4,6 +4,7 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
+import scipy
 sys.path.append(os.path.dirname(__file__) + os.sep + './')
 from FINDER import FINDER
 dqn = FINDER()
@@ -164,6 +165,9 @@ def getRobustness(gData: Dict, graph: str, sol: str) -> float:
     remainGCCsize = GCC_size(G)
 
     return 1 - remainGCCsize/fullGCCsize
+
+def getPayoff(robustness: List[float]) -> float:
+    return scipy.integrate.simpson(robustness) / len(robustness)
 
 def gameEnd(gData: Dict, sol: str) -> bool:
     G = parse_network(gData)

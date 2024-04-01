@@ -88,11 +88,16 @@ def node_ranking(self) -> Type[JsonResponse]:
     game_id = data.get('gameId') 
     round_number = data.get('round')
     network_id = data.get('chosen_network_id')
-    # DB = Database()
-    # DB.insert(mapping={
-    #     "id": round_id, "game": game_id, 
-    #     "tool_id": tool_id, "round_number": round_number, 
-    # }, relation="round")
+
+    try:
+        models.Round(
+            game=models.Game.objects.get(id=game_id),
+            round_number=round_number, 
+            tool=tool_id,
+        ).save()
+        print(f"round {round_number} of game {game_id} save success")
+    except Exception as e:
+        print("node_ranking", e)
 
     gData = data.get('graphData')
     G = util.parse_network(gData)
@@ -118,13 +123,33 @@ def payoff(self) -> Type[JsonResponse]:
     G = util.parse_network(gData)
     
     graph_name = util.get_network_config(network_id)["name"]
-    human_payoff = util.getRobustness(gData, graph_name, sol)
+    round_robustness = util.getRobustness(gData, graph_name, sol)
+
+    round = models.Round.objects.filter(
+        game=game_id, round_number=round_number
+    )
+    try:
+        round.update(robustness=round_robustness, chosen_node=sol)
+        print(f"robustness: round {round_number} of game {game_id} update success")
+    except Exception as e:
+        print("robustness", e)
+
+    all_robustness = [0] + [
+        round.robustness 
+            for round in models.Round.objects.filter(
+                game_id=game_id
+            ).order_by('round_number')
+    ]
+    # print(all_robustness)
+    human_payoff = util.getPayoff(all_robustness) # TODO : need to check the value 
+
     finder_payoff = finderRobustness(gData, graph_name)
     isEnd = util.gameEnd(gData, sol)
-    
-    # DB = Database()
-    # TODO: insert FINDER payoff
-    # DB.update({"chosen_node": sol, "payoff": human_payoff}, relation="round", pk=round_id)
+    try:
+        round.update(payoff=human_payoff, is_end=isEnd)
+        print(f"payoff: round {round_number} of game {game_id} update success")
+    except Exception as e:
+        print("payoff", e)
 
     return JsonResponse({
         "human_payoff": human_payoff, 
