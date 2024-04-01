@@ -20,9 +20,12 @@ class Game(models.Model):
     network = models.IntegerField()
 
 class Round(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    tool = models.ForeignKey(Tool, on_delete=models.CASCADE)
-    round_number = models.IntegerField(validators=[MinValueValidator(1)])
-    round_payoff = models.FloatField(validators=[MinValueValidator(0.0)])
-    chosen_node = models.IntegerField()
+    round_number = models.IntegerField()
+    class Meta:
+        unique_together = (('game', 'round_number'),)
+
+    tool = models.IntegerField()
+    robustness = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
+    payoff = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
+    chosen_node = models.IntegerField(null=True)
