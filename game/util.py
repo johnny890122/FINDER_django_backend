@@ -139,12 +139,11 @@ def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:
     )
 
     # assign the ranking
-    rank = 1
-    current_centrality_val = None
+    rank, current_val = 0, None
     for node in node_lst:
-        if node[criteria] != current_centrality_val:
-            rank = node_lst.index(node) + 1
-            current_centrality_val = node[criteria]
+        if node[criteria] != current_val:
+            rank += 1
+            current_val = node[criteria]
         ranking[node["id"]] = rank
     return ranking
 
