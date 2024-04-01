@@ -1,17 +1,15 @@
-# from .build_for_test._builtin import Page
 from django.http import JsonResponse
-from rest_framework import status
-import networkx as nx
-# from db import Database
 from django.views.decorators.csrf import csrf_exempt
-from typing import Type
-import game.util as util
+from rest_framework import status
+import numpy as np
+import networkx as nx
 import os, sys, json
 from typing import Type, List, Dict
 from io import BytesIO
-import numpy as np
+from . import models
+import game.util as util
 
-def finder_sol(G: Type[nx.Graph], graph: str):
+def finder_sol(G: nx.Graph, graph: str):
     mapping = {node: str(idx) for idx, node in enumerate(G.nodes())}
     reversed_mapping = {str(idx): node for idx, node in enumerate(G.nodes())}
     reorder_G = nx.relabel_nodes(G, mapping, copy=False)
@@ -24,7 +22,7 @@ def finder_sol(G: Type[nx.Graph], graph: str):
         sols[idx] = reversed_mapping[str(sol)]
     return sols
 
-def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict:
+def finder_ranking(G: nx.Graph, graph: str) -> Dict:
     sols = finder_sol(G, graph)
     ranking = {}
     for i, node in enumerate(sols):
@@ -49,27 +47,33 @@ def network_config(self):
     return JsonResponse(network_config, status=status.HTTP_200_OK)
 
 @csrf_exempt
-def game_start(self):
-    code = self.GET.get('chosen_network_id')
+def game_start(self) -> JsonResponse:
     player_id = self.GET.get('player_id')
-    game_id = self.GET.get('session_id') # TODO : session -> game
+    game_id = self.GET.get('game_id')
+    network_id = self.GET.get('chosen_network_id')
 
-    # DB = Database()
-    # DB.insert(mapping={"id": player_id}, relation="player")
-    # DB.insert(mapping={"id": game_id, "player": player_id, "network_code": code}, relation="game")
+    try:
+        models.Player(id=player_id).save()
+        print(f"player {player_id} save success")
+        models.Game(
+            id=game_id, 
+            player = models.Player.objects.get(id=player_id), 
+            network=network_id
+        ).save()
+        print(f"game {game_id} save success")
+    except Exception as e:
+        print("game_start", e)
 
-    network_config = util.get_network_config(code)
-    network_name = network_config["name"]
+    network_name = util.get_network_config(network_id)["name"]
     G = util.read_sample(f"data/empirical/{network_name}.gml")
-
+    
     network_detail = {
         "nodes": util.G_nodes(G), "links": util.G_links(G), 
     }
-
     return JsonResponse(network_detail, status=status.HTTP_200_OK)       
 
 @csrf_exempt
-def get_tools(self) -> Type[JsonResponse]:
+def get_tools(self) -> JsonResponse:
     try:
         tool_id = self.GET.get('chosen_tool_id')
     except:
@@ -81,12 +85,11 @@ def get_tools(self) -> Type[JsonResponse]:
     )
 
 @csrf_exempt
-def node_ranking(self) -> Type[JsonResponse]:
+def node_ranking(self) -> JsonResponse:
     data = json.loads(self.body)
     tool_id = data.get('chosen_tool_id')
-    round_id = data.get('roundId') 
-    game_id = data.get('gameId') 
-    round_number = data.get('round')
+    game_id = data.get('game_id') 
+    round_number = data.get('roundId') 
     network_id = data.get('chosen_network_id')
 
     try:
@@ -114,13 +117,13 @@ def node_ranking(self) -> Type[JsonResponse]:
     return JsonResponse(ranking, status=status.HTTP_200_OK)
 
 @csrf_exempt
-def payoff(self) -> Type[JsonResponse]:
+def payoff(self) -> JsonResponse:
     data = json.loads(self.body)
     gData = data.get('graphData')
     network_id = data.get('chosen_network_id')
-    round_id = str(data.get('roundId'))
+    round_number = str(data.get('round_id'))
+    game_id = data.get('game_id')
     sol = str(data.get('chosen_node_id'))
-    G = util.parse_network(gData)
     
     graph_name = util.get_network_config(network_id)["name"]
     round_robustness = util.getRobustness(gData, graph_name, sol)

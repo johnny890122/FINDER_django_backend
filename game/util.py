@@ -102,12 +102,6 @@ def G_nodes(G: Type[nx.Graph], criteria: str="NO_HELP") -> List[Dict[str, float]
             **{centrality: value[n] for centrality, value in node_centrality.items()}
         })
 
-    # # add a pesudo node as center node
-    # if len(list(nx.connected_components(G))) > 1:
-    #     nodes.append({
-    #         "id": "source", "degree": -1, "closeness": -1, "betweenness": -1, "page_rank": -1, "display": "False"
-    #     })
-
     return nodes
 
 def G_links(G: Type[nx.Graph]) -> List[Dict[str, int]]:
@@ -115,14 +109,6 @@ def G_links(G: Type[nx.Graph]) -> List[Dict[str, int]]:
     for (i, j) in G.edges():
         links.append({"source": i, "target": j})
     
-    # if len(list(nx.connected_components(G))) > 1:
-    #     for CC in nx.connected_components(G):
-    #         subgraph = G.copy().subgraph(CC)
-    #         # find highest degree node 
-    #         keys = list(nx.degree_centrality(subgraph).keys())
-    #         values = list(nx.degree_centrality(subgraph).values())
-    #         node = keys[ np.argmax(values)]
-    #         links.append({"source": "source", "target": node, 'dashed': "False", "display": "False"})
     return links
 
 def hxa_ranking(G: Type[nx.Graph], criteria: str) -> Dict[str, int]:

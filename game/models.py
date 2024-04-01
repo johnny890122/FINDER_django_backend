@@ -29,4 +29,4 @@ class Round(models.Model):
     robustness = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
     payoff = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
     chosen_node = models.IntegerField(null=True)
-    isEnd = models.BooleanField(default=False)
+    is_end = models.BooleanField(default=False)
