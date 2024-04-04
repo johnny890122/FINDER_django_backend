@@ -157,4 +157,35 @@ def gameEnd(gData: Dict, sol: str) -> bool:
     if len(G.edges()) == 0:
         return True
     return False
-    
+
+def finder_ranking(G: Type[nx.Graph], graph: str) -> Dict:
+    sols = finder_sol(G, graph)
+    ranking = {}
+    for i, node in enumerate(sols):
+        ranking[str(node)] = i+1
+    for node in G.nodes():
+        if node not in ranking.keys():
+            ranking[str(node)] = len(sols)+1
+
+    return ranking
+
+def finder_sol(G: Type[nx.Graph], graph: str):
+    mapping = {node: str(idx) for idx, node in enumerate(G.nodes())}
+    reversed_mapping = {str(idx): node for idx, node in enumerate(G.nodes())}
+    reorder_G = nx.relabel_nodes(G, mapping, copy=False)
+
+    G_content = BytesIO(gml_format(reorder_G).encode('utf-8'))
+    model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
+
+    _, sols = dqn.Evaluate(G_content, model_file)
+    for idx, sol in enumerate(sols):
+        sols[idx] = reversed_mapping[str(sol)]
+    return sols
+
+def finderRobustness(gData: Dict, graph: str) -> List[float]:
+    G = parse_network(gData) # TODO : payoff 的顯示問題
+    sols = finder_sol(G, graph)
+    payoff = []
+    for sol in sols:
+        payoff.append(getRobustness(gData, graph, sol))
+    return np.cumsum(payoff).tolist()
