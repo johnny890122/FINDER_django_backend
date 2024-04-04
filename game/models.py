@@ -27,5 +27,5 @@ class Round(models.Model):
 
     tool = models.IntegerField()
     payoff = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
-    chosen_node = models.CharField(max_length=20)
+    chosen_node = models.CharField(max_length=20, null=True)
     is_end = models.BooleanField(default=False)

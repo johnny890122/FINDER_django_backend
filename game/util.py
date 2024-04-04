@@ -175,10 +175,10 @@ def getInstantFinderPayoff(graph_name: str, all_chosen_node: List[str]) -> List[
     
     return payoff_lst
 
-def gameEnd(gData: Dict, sol: str) -> bool:
-    G = parse_network(gData)
-    G = remove_node(G, sol)
-    
+def gameEnd(graph_name: str, all_chosen_node: List[str]) -> bool:
+    G = read_sample(f"data/empirical/{graph_name}.gml")
+    for node in all_chosen_node:
+        G = remove_node(G, str(node))
     if len(G.edges()) == 0:
         return True
     return False
