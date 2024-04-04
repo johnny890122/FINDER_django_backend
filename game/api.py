@@ -107,7 +107,7 @@ def payoff(self) -> JsonResponse:
     human_payoff = util.getHumanPayoff(graph_name, all_chosen_node) # TODO : need to check the value 
     finder_payoff = util.getFinderPayoff(graph_name)
     instant_finder_payoff = util.getInstantFinderPayoff(graph_name, all_chosen_node)
-    isEnd = util.gameEnd(gData, sol)
+    isEnd = util.gameEnd(graph_name, all_chosen_node)
     try:
         round.update(payoff=human_payoff, is_end=isEnd)
         print(f"payoff: round {round_number} of game {game_id} update success")
