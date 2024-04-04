@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,12 +80,17 @@ WSGI_APPLICATION = 'game.wsgi.application'
 # Database
 # https://docs.game.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASES = { 
+    'default': { 
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'heroku_fa9a9e72d33b38c', 
+        'HOST': 'us-cluster-east-01.k8s.cleardb.net', 
+        'USER': 'be41ef06fecfb2', 
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'), 
+        'PORT': '3306'
     }
 }
+# import pasowrd in .env file
 
 
 # Password validation
