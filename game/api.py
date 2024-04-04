@@ -5,41 +5,8 @@ import numpy as np
 import networkx as nx
 import os, sys, json
 from typing import Type, List, Dict
-from io import BytesIO
 from . import models
 import game.util as util
-
-def finder_sol(G: nx.Graph, graph: str):
-    mapping = {node: str(idx) for idx, node in enumerate(G.nodes())}
-    reversed_mapping = {str(idx): node for idx, node in enumerate(G.nodes())}
-    reorder_G = nx.relabel_nodes(G, mapping, copy=False)
-
-    G_content = BytesIO(util.gml_format(reorder_G).encode('utf-8'))
-    model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
-
-    _, sols = util.dqn.Evaluate(G_content, model_file)
-    for idx, sol in enumerate(sols):
-        sols[idx] = reversed_mapping[str(sol)]
-    return sols
-
-def finder_ranking(G: nx.Graph, graph: str) -> Dict:
-    sols = finder_sol(G, graph)
-    ranking = {}
-    for i, node in enumerate(sols):
-        ranking[str(node)] = i+1
-    for node in G.nodes():
-        if node not in ranking.keys():
-            ranking[str(node)] = len(sols)+1
-
-    return ranking
-
-def finderRobustness(gData: Dict, graph: str) -> List[float]:
-    G = util.parse_network(gData) # TODO : payoff 的顯示問題
-    sols = finder_sol(G, graph)
-    payoff = []
-    for sol in sols:
-        payoff.append(util.getRobustness(gData, graph, sol))
-    return np.cumsum(payoff).tolist()
 
 @csrf_exempt
 def network_config(self):
@@ -74,10 +41,7 @@ def game_start(self) -> JsonResponse:
 
 @csrf_exempt
 def get_tools(self) -> JsonResponse:
-    try:
-        tool_id = self.GET.get('chosen_tool_id')
-    except:
-        tool_id = None
+    tool_id = self.GET.get('chosen_tool_id')
 
     return JsonResponse(
         util.get_tool_config(tool_id), 
@@ -110,7 +74,7 @@ def node_ranking(self) -> JsonResponse:
     if tool == "NO_HELP":
         ranking = {}
     elif tool == "FINDER":
-        ranking = finder_ranking(G, graph=graph_name)
+        ranking = util.finder_ranking(G, graph=graph_name)
     else:
         ranking = util.hxa_ranking(G, criteria=tool)
     
@@ -146,7 +110,7 @@ def payoff(self) -> JsonResponse:
     # print(all_robustness)
     human_payoff = util.getPayoff(all_robustness) # TODO : need to check the value 
 
-    finder_payoff = finderRobustness(gData, graph_name)
+    finder_payoff = util.finderRobustness(gData, graph_name)
     isEnd = util.gameEnd(gData, sol)
     try:
         round.update(payoff=human_payoff, is_end=isEnd)
