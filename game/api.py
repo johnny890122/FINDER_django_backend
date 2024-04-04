@@ -61,6 +61,8 @@ def node_ranking(self) -> JsonResponse:
             game=models.Game.objects.get(id=game_id),
             round_number=round_number, 
             tool=tool_id,
+            chosen_node=None,
+            payoff=None,
         ).save()
         print(f"round {round_number} of game {game_id} save success")
     except Exception as e:
@@ -88,6 +90,7 @@ def payoff(self) -> JsonResponse:
     round_number = str(data.get('round_id'))
     game_id = data.get('game_id')
     sol = str(data.get('chosen_node_id'))
+    
     graph_name = util.get_network_config(network_id)["name"]
     round = models.Round.objects.filter(game=game_id, round_number=round_number)
     
