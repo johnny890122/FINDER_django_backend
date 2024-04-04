@@ -62,7 +62,6 @@ def node_ranking(self) -> JsonResponse:
             round_number=round_number, 
             tool=tool_id,
             chosen_node=None,
-            robustness=None,
             payoff=None,
         ).save()
         print(f"round {round_number} of game {game_id} save success")
@@ -93,24 +92,31 @@ def payoff(self) -> JsonResponse:
     sol = str(data.get('chosen_node_id'))
     
     graph_name = util.get_network_config(network_id)["name"]
-    human_payoff = util.getRobustness(gData, graph_name, sol)
-    finder_payoff = util.finderRobustness(gData, graph_name)
+    round = models.Round.objects.filter(game=game_id, round_number=round_number)
+    
+    try:
+        round.update(chosen_node=sol)
+        print(f"chosen_node: round {round_number} of game {game_id} update success")
+    except Exception as e:
+        print("chosen_node", e)
+
+    all_chosen_node = [
+        round.chosen_node 
+            for round in models.Round.objects.filter(game_id=game_id).order_by('round_number')
+    ]
+    human_payoff = util.getHumanPayoff(graph_name, all_chosen_node) # TODO : need to check the value 
+    finder_payoff = util.getFinderPayoff(graph_name)
+    instant_finder_payoff = util.getInstantFinderPayoff(graph_name, all_chosen_node)
     isEnd = util.gameEnd(gData, sol)
     try:
-        round = models.Round.objects.filter(
-            game=game_id, 
-            round_number=round_number
-        )
-        round.update(
-            payoff=human_payoff, 
-            chosen_node=sol,
-        )
-        print(f"round {round_number} of game {game_id} update success")
+        round.update(payoff=human_payoff, is_end=isEnd)
+        print(f"payoff: round {round_number} of game {game_id} update success")
     except Exception as e:
         print("payoff", e)
 
     return JsonResponse({
         "human_payoff": human_payoff, 
         "finder_payoff": finder_payoff, 
+        "instant_finder_payoff": instant_finder_payoff,
         "isEnd": isEnd
     }, status=status.HTTP_200_OK)

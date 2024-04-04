@@ -4,6 +4,7 @@ from pathlib import Path
 import json, os, sys
 from io import BytesIO
 import numpy as np
+from scipy.integrate import simpson as simpson
 sys.path.append(os.path.dirname(__file__) + os.sep + './')
 from FINDER import FINDER
 dqn = FINDER()
@@ -138,17 +139,41 @@ def gml_format(G: nx.Graph) -> str:
     gml_generator = nx.generate_gml(G) 
     return "\n".join([gml for gml in gml_generator])
 
-def getRobustness(gData: Dict, graph: str, sol: str) -> float:
-    path = Path(f"data/empirical/{graph}.gml")
-    
-    # compute robustness
-    full_G = read_sample(path)
+def getRobustness(G: nx.Graph, graph: str) -> float:
+    full_G = read_sample(f"data/empirical/{graph}.gml")
     fullGCCsize = GCC_size(full_G)
-    G = parse_network(gData)
-    G = remove_node(G, node=sol)
     remainGCCsize = GCC_size(G)
 
     return 1 - remainGCCsize/fullGCCsize
+
+def getHumanPayoff(graph_name: str, all_chosen_node: List[str]) -> float:
+    all_robustness = [0]
+
+    G = read_sample(Path(f"data/empirical/{graph_name}.gml"))
+    for chosen_node in all_chosen_node:
+        G = remove_node(G, chosen_node)
+        all_robustness.append(getRobustness(G, graph_name))
+
+    return simpson(all_robustness) / len(all_robustness)
+
+def getInstantFinderPayoff(graph_name: str, all_chosen_node: List[str]) -> List[float]:
+    payoff_lst, all_robustness = [], [0]
+    
+    G = read_sample(Path(f"data/empirical/{graph_name}.gml"))
+    for chosen_node in all_chosen_node:
+        G = remove_node(G, str(chosen_node))
+        all_robustness.append(getRobustness(G, graph_name))
+        payoff = simpson(all_robustness) / len(all_robustness)
+        payoff_lst.append(payoff)
+    
+    sols = finder_sol(G.copy(), graph_name)
+    for sol in sols:
+        G = remove_node(G, str(sol))
+        all_robustness.append(getRobustness(G, graph_name))
+        payoff = simpson(all_robustness) / len(all_robustness)
+        payoff_lst.append(payoff)
+    
+    return payoff_lst
 
 def gameEnd(gData: Dict, sol: str) -> bool:
     G = parse_network(gData)
@@ -182,10 +207,15 @@ def finder_sol(G: Type[nx.Graph], graph: str):
         sols[idx] = reversed_mapping[str(sol)]
     return sols
 
-def finderRobustness(gData: Dict, graph: str) -> List[float]:
-    G = parse_network(gData) # TODO : payoff 的顯示問題
-    sols = finder_sol(G, graph)
-    payoff = []
+def getFinderPayoff(graph_name: str) -> List[float]:
+    payoff_lst, all_robustness = [], [0]
+    
+    G = read_sample(Path(f"data/empirical/{graph_name}.gml"))
+    sols = finder_sol(G, graph_name)
     for sol in sols:
-        payoff.append(getRobustness(gData, graph, sol))
-    return np.cumsum(payoff).tolist()
+        G = remove_node(G, str(sol))
+        all_robustness.append(getRobustness(G, graph_name))
+        payoff = simpson(all_robustness) / len(all_robustness)
+        payoff_lst.append(payoff)
+
+    return payoff_lst

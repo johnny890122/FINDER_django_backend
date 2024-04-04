@@ -26,6 +26,6 @@ class Round(models.Model):
         unique_together = (('game', 'round_number'),)
 
     tool = models.IntegerField()
-    robustness = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
     payoff = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
-    chosen_node = models.IntegerField(null=True)
+    chosen_node = models.CharField(max_length=20)
+    is_end = models.BooleanField(default=False)
