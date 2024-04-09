@@ -7,17 +7,18 @@ import os, sys, json
 from typing import Type, List, Dict
 from . import models
 import game.util as util
+from django.core.handlers.wsgi import WSGIRequest
 
 @csrf_exempt
-def network_config(self):
+def network_config(request: WSGIRequest) -> JsonResponse:
     network_config = util.get_network_config()
     return JsonResponse(network_config, status=status.HTTP_200_OK)
 
 @csrf_exempt
-def game_start(self) -> JsonResponse:
-    player_id = self.GET.get('player_id')
-    game_id = self.GET.get('game_id')
-    network_id = self.GET.get('chosen_network_id')
+def game_start(request: WSGIRequest) -> JsonResponse:
+    player_id = request.GET.get('player_id')
+    game_id = request.GET.get('game_id')
+    network_id = request.GET.get('chosen_network_id')
 
     try:
         models.Player(id=player_id).save()
@@ -49,8 +50,8 @@ def get_tools(self) -> JsonResponse:
     )
 
 @csrf_exempt
-def node_ranking(self) -> JsonResponse:
-    data = json.loads(self.body)
+def node_ranking(request: WSGIRequest) -> JsonResponse:
+    data = json.loads(request.body)
     tool_id = data.get('chosen_tool_id')
     game_id = data.get('game_id') 
     round_number = data.get('roundId') 
@@ -83,9 +84,8 @@ def node_ranking(self) -> JsonResponse:
     return JsonResponse(ranking, status=status.HTTP_200_OK)
 
 @csrf_exempt
-def payoff(self) -> JsonResponse:
-    data = json.loads(self.body)
-    gData = data.get('graphData')
+def payoff(request: WSGIRequest) -> JsonResponse:
+    data = json.loads(request.body)
     network_id = data.get('chosen_network_id')
     round_number = str(data.get('round_id'))
     game_id = data.get('game_id')
@@ -104,7 +104,7 @@ def payoff(self) -> JsonResponse:
         round.chosen_node 
             for round in models.Round.objects.filter(game_id=game_id).order_by('round_number')
     ]
-    human_payoff = util.getHumanPayoff(graph_name, all_chosen_node) # TODO : need to check the value 
+    human_payoff = util.getHumanPayoff(graph_name, all_chosen_node) 
     finder_payoff = util.getFinderPayoff(graph_name)
     instant_finder_payoff = util.getInstantFinderPayoff(graph_name, all_chosen_node)
     isEnd = util.gameEnd(graph_name, all_chosen_node)
