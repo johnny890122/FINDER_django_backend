@@ -1,12 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-
 Globals:
   Function:
     Timeout: 50
     MemorySize: 2000
     Tracing: Active
-    # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
     LoggingConfig:
       LogFormat: JSON
   Api:
@@ -14,27 +12,27 @@ Globals:
     - image/png
     - image/jpg
     - image/jpeg
-
     TracingEnabled: true
 Resources:
   InferenceFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
       Architectures:
       - arm64
       Events:
         Inference:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /classify_digit
             Method: post
       CodeUri: ./game
+      ImageUri: inferencefunction:python3.12-v1
     Metadata:
-      Dockerfile: Dockerfile
-      DockerContext: ./game
+      DockerContext: /Users/zhangxiangxian/FINDER_django_backend/game
       DockerTag: python3.12-v1
-
+      Dockerfile: Dockerfile
+      SamResourceId: InferenceFunction
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
     Properties:
@@ -49,15 +47,19 @@ Resources:
         Ref: ApplicationResourceGroup
       AutoConfigurationEnabled: 'true'
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   InferenceApi:
     Description: API Gateway endpoint URL for Prod stage for Inference function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/classify_digit/"
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/classify_digit/
   InferenceFunction:
     Description: Inference Lambda Function ARN
-    Value: !GetAtt InferenceFunction.Arn
+    Value:
+      Fn::GetAtt:
+      - InferenceFunction
+      - Arn
   InferenceFunctionIamRole:
     Description: Implicit IAM Role created for Inference function
-    Value: !GetAtt InferenceFunctionRole.Arn
+    Value:
+      Fn::GetAtt:
+      - InferenceFunctionRole
+      - Arn

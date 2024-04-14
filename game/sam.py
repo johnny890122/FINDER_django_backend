@@ -9,7 +9,8 @@ from typing import Type
 BASE_URL = "https://finder-django-backend-6331eb96b282.herokuapp.com/"
 
 def lambda_handler(event, context): 
-    network_id = event["network_id"]
+    body = json.loads(event["body"])
+    network_id = body["network_id"]
     response = requests.get(
         url = BASE_URL + 'graphs/', 
         params = {'chosen_network_id': network_id}
