@@ -19,6 +19,7 @@ from django.urls import path
 import game.api as api
 
 urlpatterns = [
+    path('graphs/', api.network_detail),
     path('networks/', api.network_config), 
     path('game_start/', api.game_start), 
     path('tools/', api.get_tools),

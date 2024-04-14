@@ -14,6 +14,12 @@ def network_config(self):
     return JsonResponse(network_config, status=status.HTTP_200_OK)
 
 @csrf_exempt
+def network_detail(self) -> JsonResponse:
+    network_id = self.GET.get('chosen_network_id')
+    network_detail = util.network_detail(network_id)
+    return JsonResponse(network_detail, status=status.HTTP_200_OK)
+
+@csrf_exempt
 def game_start(self) -> JsonResponse:
     player_id = self.GET.get('player_id')
     game_id = self.GET.get('game_id')
@@ -31,12 +37,7 @@ def game_start(self) -> JsonResponse:
     except Exception as e:
         print("game_start", e)
 
-    network_name = util.get_network_config(network_id)["name"]
-    G = util.read_sample(f"data/empirical/{network_name}.gml")
-    
-    network_detail = {
-        "nodes": util.G_nodes(G), "links": util.G_links(G), 
-    }
+    network_detail = util.network_detail(network_id)
     return JsonResponse(network_detail, status=status.HTTP_200_OK)       
 
 @csrf_exempt

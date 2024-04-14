@@ -56,6 +56,14 @@ def parse_network(network_detail: Dict[str, list]) -> Type[nx.Graph]:
         G.add_edge(link['source'], link['target'])
     return G
 
+def network_detail(network_id: str) -> Dict[str, list]:
+    network_name = get_network_config(network_id)["name"]
+    G =read_sample(f"data/empirical/{network_name}.gml")
+    network_detail = {
+        "nodes": G_nodes(G), "links": G_links(G), 
+    }
+    return network_detail
+
 def remove_node(G: Type[nx.Graph], node: str) -> Type[nx.Graph]:
     if node in G.nodes():
         G.remove_node(node)
