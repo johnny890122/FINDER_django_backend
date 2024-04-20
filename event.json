@@ -1,3 +1,5 @@
 {
-  "network_id": "0" 
+  "body" : {
+    "network_id": "0"
+  }
 }

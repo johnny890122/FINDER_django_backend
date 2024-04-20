@@ -19,7 +19,7 @@ Resources:
     Properties:
       PackageType: Image
       Architectures:
-      - arm64
+      - x86_64
       Events:
         Inference:
           Type: Api
@@ -27,10 +27,10 @@ Resources:
             Path: /classify_digit
             Method: post
       CodeUri: ./game
-      ImageUri: inferencefunction:python3.12-v1
+      ImageUri: inferencefunction:python3.11
     Metadata:
       DockerContext: /Users/zhangxiangxian/FINDER_django_backend/game
-      DockerTag: python3.12-v1
+      DockerTag: python3.11
       Dockerfile: Dockerfile
       SamResourceId: InferenceFunction
   ApplicationResourceGroup:

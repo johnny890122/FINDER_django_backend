@@ -1,6 +1,6 @@
 # import json, os, requests
 # from io import BytesIO
-from FINDER import FINDER
+from FINDER.FINDER import FINDER
 import networkx as nx
 import requests
 import game.util as util
