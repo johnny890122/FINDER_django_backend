@@ -1,5 +1,7 @@
-networkx
-requests
-numpy
-scipy
+# networkx
+# requests
+# numpy
+# scipy
+cython==3.0.9
+# tensorflow==2.16.1
 # https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.9.0-py3-none-any.whl

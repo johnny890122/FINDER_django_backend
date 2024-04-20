@@ -4,21 +4,24 @@
 {
     "distutils": {
         "depends": [
-            "src/lib/graph.h",
-            "src/lib/mvc_env.h",
-            "src/lib/nstep_replay_mem_prioritized.h"
+            "game/FINDER/src/lib/graph.h",
+            "game/FINDER/src/lib/mvc_env.h",
+            "game/FINDER/src/lib/nstep_replay_mem_prioritized.h"
         ],
         "extra_compile_args": [
             "-std=c++11"
         ],
+        "include_dirs": [
+            "game/FINDER"
+        ],
         "language": "c++",
         "name": "nstep_replay_mem_prioritized",
         "sources": [
-            "nstep_replay_mem_prioritized.pyx",
-            "src/lib/nstep_replay_mem_prioritized.cpp",
-            "src/lib/graph.cpp",
-            "src/lib/mvc_env.cpp",
-            "src/lib/disjoint_set.cpp"
+            "game/FINDER/nstep_replay_mem_prioritized.pyx",
+            "game/FINDER/src/lib/nstep_replay_mem_prioritized.cpp",
+            "game/FINDER/src/lib/graph.cpp",
+            "game/FINDER/src/lib/mvc_env.cpp",
+            "game/FINDER/src/lib/disjoint_set.cpp"
         ]
     },
     "module_name": "nstep_replay_mem_prioritized"
@@ -1500,7 +1503,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "nstep_replay_mem_prioritized.pyx",
+  "game/FINDER/nstep_replay_mem_prioritized.pyx",
   "<stringsource>",
 };
 /* #### Code section: utility_code_proto_before_types ### */
@@ -2482,8 +2485,8 @@ static const char __pyx_k_py_SumTree___setstate_cython[] = "py_SumTree.__setstat
 static const char __pyx_k_py_LeafResult___reduce_cython[] = "py_LeafResult.__reduce_cython__";
 static const char __pyx_k_py_LeafResult___setstate_cython[] = "py_LeafResult.__setstate_cython__";
 static const char __pyx_k_py_ReplaySample___reduce_cython[] = "py_ReplaySample.__reduce_cython__";
+static const char __pyx_k_game_FINDER_nstep_replay_mem_pri[] = "game/FINDER/nstep_replay_mem_prioritized.pyx";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
-static const char __pyx_k_nstep_replay_mem_prioritized_pyx[] = "nstep_replay_mem_prioritized.pyx";
 static const char __pyx_k_py_ReplaySample___setstate_cytho[] = "py_ReplaySample.__setstate_cython__";
 /* #### Code section: decls ### */
 static int __pyx_pf_28nstep_replay_mem_prioritized_7py_Data___cinit__(struct __pyx_obj_28nstep_replay_mem_prioritized_py_Data *__pyx_v_self); /* proto */
@@ -2631,6 +2634,7 @@ typedef struct {
   PyObject *__pyx_kp_u_enable;
   PyObject *__pyx_n_s_epsilon;
   PyObject *__pyx_n_s_g;
+  PyObject *__pyx_kp_s_game_FINDER_nstep_replay_mem_pri;
   PyObject *__pyx_kp_u_gc;
   PyObject *__pyx_n_s_getstate;
   PyObject *__pyx_n_s_graph;
@@ -2648,7 +2652,6 @@ typedef struct {
   PyObject *__pyx_n_s_np;
   PyObject *__pyx_n_s_nstep;
   PyObject *__pyx_n_s_nstep_replay_mem_prioritized;
-  PyObject *__pyx_kp_s_nstep_replay_mem_prioritized_pyx;
   PyObject *__pyx_n_s_numCoveredEdges;
   PyObject *__pyx_n_s_num_edges;
   PyObject *__pyx_n_s_num_nodes;
@@ -2810,6 +2813,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_u_enable);
   Py_CLEAR(clear_module_state->__pyx_n_s_epsilon);
   Py_CLEAR(clear_module_state->__pyx_n_s_g);
+  Py_CLEAR(clear_module_state->__pyx_kp_s_game_FINDER_nstep_replay_mem_pri);
   Py_CLEAR(clear_module_state->__pyx_kp_u_gc);
   Py_CLEAR(clear_module_state->__pyx_n_s_getstate);
   Py_CLEAR(clear_module_state->__pyx_n_s_graph);
@@ -2827,7 +2831,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_np);
   Py_CLEAR(clear_module_state->__pyx_n_s_nstep);
   Py_CLEAR(clear_module_state->__pyx_n_s_nstep_replay_mem_prioritized);
-  Py_CLEAR(clear_module_state->__pyx_kp_s_nstep_replay_mem_prioritized_pyx);
   Py_CLEAR(clear_module_state->__pyx_n_s_numCoveredEdges);
   Py_CLEAR(clear_module_state->__pyx_n_s_num_edges);
   Py_CLEAR(clear_module_state->__pyx_n_s_num_nodes);
@@ -2967,6 +2970,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_u_enable);
   Py_VISIT(traverse_module_state->__pyx_n_s_epsilon);
   Py_VISIT(traverse_module_state->__pyx_n_s_g);
+  Py_VISIT(traverse_module_state->__pyx_kp_s_game_FINDER_nstep_replay_mem_pri);
   Py_VISIT(traverse_module_state->__pyx_kp_u_gc);
   Py_VISIT(traverse_module_state->__pyx_n_s_getstate);
   Py_VISIT(traverse_module_state->__pyx_n_s_graph);
@@ -2984,7 +2988,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_np);
   Py_VISIT(traverse_module_state->__pyx_n_s_nstep);
   Py_VISIT(traverse_module_state->__pyx_n_s_nstep_replay_mem_prioritized);
-  Py_VISIT(traverse_module_state->__pyx_kp_s_nstep_replay_mem_prioritized_pyx);
   Py_VISIT(traverse_module_state->__pyx_n_s_numCoveredEdges);
   Py_VISIT(traverse_module_state->__pyx_n_s_num_edges);
   Py_VISIT(traverse_module_state->__pyx_n_s_num_nodes);
@@ -3156,6 +3159,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_u_enable __pyx_mstate_global->__pyx_kp_u_enable
 #define __pyx_n_s_epsilon __pyx_mstate_global->__pyx_n_s_epsilon
 #define __pyx_n_s_g __pyx_mstate_global->__pyx_n_s_g
+#define __pyx_kp_s_game_FINDER_nstep_replay_mem_pri __pyx_mstate_global->__pyx_kp_s_game_FINDER_nstep_replay_mem_pri
 #define __pyx_kp_u_gc __pyx_mstate_global->__pyx_kp_u_gc
 #define __pyx_n_s_getstate __pyx_mstate_global->__pyx_n_s_getstate
 #define __pyx_n_s_graph __pyx_mstate_global->__pyx_n_s_graph
@@ -3173,7 +3177,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_np __pyx_mstate_global->__pyx_n_s_np
 #define __pyx_n_s_nstep __pyx_mstate_global->__pyx_n_s_nstep
 #define __pyx_n_s_nstep_replay_mem_prioritized __pyx_mstate_global->__pyx_n_s_nstep_replay_mem_prioritized
-#define __pyx_kp_s_nstep_replay_mem_prioritized_pyx __pyx_mstate_global->__pyx_kp_s_nstep_replay_mem_prioritized_pyx
 #define __pyx_n_s_numCoveredEdges __pyx_mstate_global->__pyx_n_s_numCoveredEdges
 #define __pyx_n_s_num_edges __pyx_mstate_global->__pyx_n_s_num_edges
 #define __pyx_n_s_num_nodes __pyx_mstate_global->__pyx_n_s_num_nodes
@@ -11463,6 +11466,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_u_enable, __pyx_k_enable, sizeof(__pyx_k_enable), 0, 1, 0, 0},
     {&__pyx_n_s_epsilon, __pyx_k_epsilon, sizeof(__pyx_k_epsilon), 0, 0, 1, 1},
     {&__pyx_n_s_g, __pyx_k_g, sizeof(__pyx_k_g), 0, 0, 1, 1},
+    {&__pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_k_game_FINDER_nstep_replay_mem_pri, sizeof(__pyx_k_game_FINDER_nstep_replay_mem_pri), 0, 0, 1, 0},
     {&__pyx_kp_u_gc, __pyx_k_gc, sizeof(__pyx_k_gc), 0, 1, 0, 0},
     {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
     {&__pyx_n_s_graph, __pyx_k_graph, sizeof(__pyx_k_graph), 0, 0, 1, 1},
@@ -11480,7 +11484,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
     {&__pyx_n_s_nstep, __pyx_k_nstep, sizeof(__pyx_k_nstep), 0, 0, 1, 1},
     {&__pyx_n_s_nstep_replay_mem_prioritized, __pyx_k_nstep_replay_mem_prioritized, sizeof(__pyx_k_nstep_replay_mem_prioritized), 0, 0, 1, 1},
-    {&__pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_k_nstep_replay_mem_prioritized_pyx, sizeof(__pyx_k_nstep_replay_mem_prioritized_pyx), 0, 0, 1, 0},
     {&__pyx_n_s_numCoveredEdges, __pyx_k_numCoveredEdges, sizeof(__pyx_k_numCoveredEdges), 0, 0, 1, 1},
     {&__pyx_n_s_num_edges, __pyx_k_num_edges, sizeof(__pyx_k_num_edges), 0, 0, 1, 1},
     {&__pyx_n_s_num_nodes, __pyx_k_num_nodes, sizeof(__pyx_k_num_nodes), 0, 0, 1, 1},
@@ -11599,7 +11602,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__8 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_p, __pyx_n_s_pyData, __pyx_n_s_g); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_n_s_Add, 100, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_n_s_Add, 100, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 100, __pyx_L1_error)
 
   /* "nstep_replay_mem_prioritized.pyx":116
  *         deref(self.inner_SumTree).Add(p,self.inner_Data)
@@ -11611,7 +11614,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__10 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_tree_idx, __pyx_n_s_p); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_n_s_Update, 116, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_n_s_Update, 116, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 116, __pyx_L1_error)
 
   /* "nstep_replay_mem_prioritized.pyx":119
  *         deref(self.inner_SumTree).Update(tree_idx,p)
@@ -11623,7 +11626,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__12 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_v, __pyx_n_s_result); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_n_s_Get_leaf, 119, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_n_s_Get_leaf, 119, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 119, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -11665,7 +11668,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__18 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_transition, __pyx_n_s_g); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_n_s_Store, 224, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_n_s_Store, 224, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 224, __pyx_L1_error)
 
   /* "nstep_replay_mem_prioritized.pyx":240
  *         deref(self.inner_Memory).Store(self.inner_Data)
@@ -11677,7 +11680,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__20 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_mvcenv, __pyx_n_s_nstep, __pyx_n_s_g); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_n_s_Add, 240, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_n_s_Add, 240, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 240, __pyx_L1_error)
 
   /* "nstep_replay_mem_prioritized.pyx":261
  *         deref(self.inner_Memory).Add(self.inner_MvcEnv,nstep)
@@ -11689,7 +11692,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__22 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_n, __pyx_n_s_result); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_n_s_Sampling, 261, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_n_s_Sampling, 261, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 261, __pyx_L1_error)
 
   /* "nstep_replay_mem_prioritized.pyx":267
  *         return  result
@@ -11701,7 +11704,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__24 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_tree_idx, __pyx_n_s_abs_errors); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_nstep_replay_mem_prioritized_pyx, __pyx_n_s_batch_update, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_game_FINDER_nstep_replay_mem_pri, __pyx_n_s_batch_update, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 267, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<

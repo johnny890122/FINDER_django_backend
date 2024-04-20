@@ -15,12 +15,12 @@ import random
 import time
 import sys
 from tqdm import tqdm
-import PrepareBatchGraph
-import graph
-import nstep_replay_mem
-import nstep_replay_mem_prioritized
-import mvc_env
-import utils
+import FINDER.PrepareBatchGraph as PrepareBatchGraph
+import FINDER.graph as graph
+import FINDER.nstep_replay_mem as nstep_replay_mem
+import FINDER.nstep_replay_mem_prioritized as nstep_replay_mem_prioritized
+import FINDER.mvc_env as mvc_env
+import FINDER.utils as utils
 import os
 import warnings
 # from simulator import CovertGenerator, DarkGenerator, fintuing_realG_generator
