@@ -57,7 +57,7 @@ def network_detail(network_id: str) -> Dict[str, list]:
     network_name = get_network_config(network_id)["name"]
     G =read_sample(f"data/empirical/{network_name}.gml")
     network_detail = {
-        "nodes": G_nodes(G), "links": G_links(G), 
+        "nodes": G_nodes(G), "links": G_links(G), "name": network_name, 
     }
     return network_detail
 
