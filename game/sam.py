@@ -37,9 +37,10 @@ def lambda_handler(event, context):
     # 3. do the prediction
     G = util.parse_network(dct)
     content = BytesIO(util.gml_format(G).encode('utf-8'))
-    # dqn = FINDER()
-    # val, sol = dqn.Evaluate(content, model)
-    sol = None
+
+    model_file = f"tmp/{model_name}.ckpt"
+    dqn = FINDER()
+    val, sol = dqn.Evaluate(content, model_file)
 
     return {
         'statusCode': 200,
