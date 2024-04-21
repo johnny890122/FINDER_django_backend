@@ -1,7 +1,7 @@
 from typing import Type, List, Dict
 import networkx as nx
 from pathlib import Path
-import json, os, sys
+import json, os, sys, requests
 from io import BytesIO
 import numpy as np
 from scipy.integrate import simpson as simpson
@@ -204,10 +204,16 @@ def finder_sol(G: Type[nx.Graph], graph: str):
     reversed_mapping = {str(idx): node for idx, node in enumerate(G.nodes())}
     reorder_G = nx.relabel_nodes(G, mapping, copy=False)
 
-    G_content = BytesIO(gml_format(reorder_G).encode('utf-8'))
-    model_file = f'./models/Model_EMPIRICAL/{graph}.ckpt'
+    url = "https://boupgjsrk7.execute-api.us-east-1.amazonaws.com/Prod/classify_digit/"
+    # url = "http://127.0.0.1:3000/classify_digit/"
+    response = requests.post(url, json = {
+            "graph": graph, 
+            "nodes": G_nodes(reorder_G), 
+            "links": G_links(reorder_G), 
+        }
+    )
 
-    _, sols = dqn.Evaluate(G_content, model_file)
+    sols = response.json()["sols"]
     for idx, sol in enumerate(sols):
         sols[idx] = reversed_mapping[str(sol)]
     return sols
