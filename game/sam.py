@@ -1,4 +1,4 @@
-import json, os, requests
+import json, os, requests, time
 from io import BytesIO
 from FINDER import FINDER
 import networkx as nx
@@ -12,13 +12,7 @@ dqn = FINDER()
 def lambda_handler(event, context): 
     # 1. prepare the graph data
     body = json.loads(event["body"])
-    network_id = body["network_id"]
-    response = requests.get(
-        url = BASE_URL + 'graphs/', 
-        params = {'chosen_network_id': network_id}
-    )
-    dct = eval(response.text)
-    model_name = dct["name"]
+    model_name = body["graph"]
     
     # 2. prepare the ckpt data
     for ext in ["index", "data-00000-of-00001", "meta"]:
@@ -33,17 +27,17 @@ def lambda_handler(event, context):
             pass 
     
     # 3. do the prediction
-    G = util.parse_network(dct)
+    G = util.parse_network({"nodes": body["nodes"], "links": body["links"]})
     content = BytesIO(util.gml_format(G).encode('utf-8'))
 
     model_file = f"/tmp/{model_name}.ckpt"
-    val, sol = dqn.Evaluate(content, model_file)
+    _, sol = dqn.Evaluate(content, model_file)
 
     return {
         'statusCode': 200,
         'body': json.dumps(
             {
-                "predicted_label": sol,
+                "sols": sol,
             }
         )
     }
