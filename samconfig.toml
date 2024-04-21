@@ -17,8 +17,10 @@ capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
 resolve_image_repos = true
-s3_prefix = "sam"
+s3_prefix = "test"
 region = "us-east-1"
+disable_rollback = true
+stack_name = "test"
 
 [default.package.parameters]
 resolve_s3 = true
@@ -27,7 +29,7 @@ resolve_s3 = true
 watch = true
 
 [default.local_start_api.parameters]
-warm_containers = "EAGER"
+warm_containers = "LAZY"
 
 [default.local_start_lambda.parameters]
-warm_containers = "EAGER"
+warm_containers = "LAZY"

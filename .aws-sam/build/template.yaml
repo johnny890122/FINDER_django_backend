@@ -29,7 +29,7 @@ Resources:
       CodeUri: ./game
       ImageUri: inferencefunction:python3.11
     Metadata:
-      DockerContext: /home/johnny/FINDER_django_backend/game
+      DockerContext: /Users/zhangxiangxian/FINDER_django_backend/game
       DockerTag: python3.11
       Dockerfile: Dockerfile
       SamResourceId: InferenceFunction

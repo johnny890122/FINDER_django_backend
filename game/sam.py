@@ -7,13 +7,11 @@ import game.util as util
 from typing import Type
 
 BASE_URL = "https://finder-django-backend-6331eb96b282.herokuapp.com/"
+dqn = FINDER()
 
-# TODO: fix tensorflow compatibility issue
 def lambda_handler(event, context): 
-    
     # 1. prepare the graph data
     body = json.loads(event["body"])
-    # body = event["body"]
     network_id = body["network_id"]
     response = requests.get(
         url = BASE_URL + 'graphs/', 
@@ -38,8 +36,7 @@ def lambda_handler(event, context):
     G = util.parse_network(dct)
     content = BytesIO(util.gml_format(G).encode('utf-8'))
 
-    model_file = f"tmp/{model_name}.ckpt"
-    dqn = FINDER()
+    model_file = f"/tmp/{model_name}.ckpt"
     val, sol = dqn.Evaluate(content, model_file)
 
     return {
