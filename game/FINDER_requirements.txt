@@ -1,0 +1,7 @@
+tensorflow-cpu
+networkx
+requests
+numpy
+scipy
+tqdm
+cython==3.0.9

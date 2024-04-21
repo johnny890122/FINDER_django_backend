@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 import numpy as np
@@ -18,6 +18,22 @@ def network_detail(self) -> JsonResponse:
     network_id = self.GET.get('chosen_network_id')
     network_detail = util.network_detail(network_id)
     return JsonResponse(network_detail, status=status.HTTP_200_OK)
+
+@csrf_exempt
+def model_ckpt(request) -> HttpResponse:
+    model_name = request.GET.get('model_name')
+    extension = request.GET.get('extension')
+
+    path = f'models/Model_EMPIRICAL/{model_name}.ckpt.{extension}' 
+
+    if os.path.exists(path):
+        response = HttpResponse(content_type='application/octet-stream', status=status.HTTP_200_OK)
+        with open(path, 'rb') as f:
+            response.write(f.read())
+        response['Content-Disposition'] = f'attachment; filename="{model_name}.ckpt.{extension}"'
+        return response
+    else:
+        return HttpResponse("File not found", status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
 def game_start(self) -> JsonResponse:

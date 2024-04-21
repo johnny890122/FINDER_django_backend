@@ -5,9 +5,6 @@ import json, os, sys
 from io import BytesIO
 import numpy as np
 from scipy.integrate import simpson as simpson
-sys.path.append(os.path.dirname(__file__) + os.sep + './')
-from FINDER import FINDER
-dqn = FINDER()
 
 def get_network_config(code: str=None) -> Dict:
     code = str(code)
@@ -60,7 +57,7 @@ def network_detail(network_id: str) -> Dict[str, list]:
     network_name = get_network_config(network_id)["name"]
     G =read_sample(f"data/empirical/{network_name}.gml")
     network_detail = {
-        "nodes": G_nodes(G), "links": G_links(G), 
+        "nodes": G_nodes(G), "links": G_links(G), "name": network_name, 
     }
     return network_detail
 
