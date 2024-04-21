@@ -5,3 +5,4 @@ game/migrations/__pycache__
 game/migrations/.DS_Store
 .DS_Store
 .env
+.aws-sam/
