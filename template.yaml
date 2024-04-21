@@ -22,7 +22,7 @@ Resources:
     Properties:
       PackageType: Image
       Architectures:
-      - x86_64
+      - arm64
       Events:
         Inference:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -33,7 +33,7 @@ Resources:
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./game
-      DockerTag: python3.11
+      DockerTag: python3.12-v1
 
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group

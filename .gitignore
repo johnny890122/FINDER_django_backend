@@ -1,9 +1,7 @@
 db.sqlite3
-.DS_Store
-.env
 game/__pycache__
 game/.DS_Store
 game/migrations/__pycache__
 game/migrations/.DS_Store
-data/.DS_Store
-*.ipynb
+.DS_Store
+.env
