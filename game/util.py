@@ -204,7 +204,7 @@ def finder_sol(G: Type[nx.Graph], graph: str):
     reversed_mapping = {str(idx): node for idx, node in enumerate(G.nodes())}
     reorder_G = nx.relabel_nodes(G, mapping, copy=False)
 
-    url = "https://boupgjsrk7.execute-api.us-east-1.amazonaws.com/Prod/classify_digit/"
+    url = "https://iyw22dsqm7.execute-api.us-east-1.amazonaws.com/Prod/classify_digit/"
     # url = "http://127.0.0.1:3000/classify_digit/"
     response = requests.post(url, json = {
             "graph": graph, 

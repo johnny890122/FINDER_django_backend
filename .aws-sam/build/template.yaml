@@ -2,8 +2,8 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Timeout: 50
-    MemorySize: 8000
+    Timeout: 100
+    MemorySize: 3000
     Tracing: Active
     LoggingConfig:
       LogFormat: JSON
