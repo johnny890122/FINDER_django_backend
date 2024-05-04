@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 import numpy as np
 import networkx as nx
-import os, sys, json
+import os, sys, json, threading
 from typing import Type, List, Dict
 from . import models
 import game.util as util
@@ -59,6 +59,15 @@ def game_start(self) -> JsonResponse:
 @csrf_exempt
 def get_tools(self) -> JsonResponse:
     tool_id = self.GET.get('chosen_tool_id')
+
+    # function: call aws-sam to invoke the container
+    def invole_aws_sam():
+        G = util.read_sample('data/empirical/911.gml')
+        _ = util.finder_sol(G, graph='911')
+
+    # Create a separate thread
+    thread = threading.Thread(target=invole_aws_sam)
+    thread.start()
 
     return JsonResponse(
         util.get_tool_config(tool_id), 
