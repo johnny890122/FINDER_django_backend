@@ -42,14 +42,15 @@ def game_start(self) -> JsonResponse:
     network_id = self.GET.get('chosen_network_id')
 
     try:
-        models.Player(id=player_id).save()
-        print(f"player {player_id} save success")
+        if not models.Player.objects.filter(id=player_id).exists():
+            models.Player(id=player_id).save()
+        # print(f"player {player_id} save success")
         models.Game(
             id=game_id, 
             player = models.Player.objects.get(id=player_id), 
             network=network_id
         ).save()
-        print(f"game {game_id} save success")
+        # print(f"game {game_id} save success")
     except Exception as e:
         print("game_start", e)
 
@@ -90,7 +91,7 @@ def node_ranking(self) -> JsonResponse:
             chosen_node=None,
             payoff=None,
         ).save()
-        print(f"round {round_number} of game {game_id} save success")
+        # print(f"round {round_number} of game {game_id} save success")
     except Exception as e:
         print("node_ranking", e)
 
@@ -122,7 +123,7 @@ def payoff(self) -> JsonResponse:
     
     try:
         round.update(chosen_node=sol)
-        print(f"chosen_node: round {round_number} of game {game_id} update success")
+        # print(f"chosen_node: round {round_number} of game {game_id} update success")
     except Exception as e:
         print("chosen_node", e)
 
@@ -136,7 +137,7 @@ def payoff(self) -> JsonResponse:
     isEnd = util.gameEnd(graph_name, all_chosen_node)
     try:
         round.update(payoff=human_payoff, is_end=isEnd)
-        print(f"payoff: round {round_number} of game {game_id} update success")
+        # print(f"payoff: round {round_number} of game {game_id} update success")
     except Exception as e:
         print("payoff", e)
 
