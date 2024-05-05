@@ -156,7 +156,7 @@ def getHumanPayoff(graph_name: str, all_chosen_node: List[str]) -> float:
 
     G = read_sample(Path(f"data/empirical/{graph_name}.gml"))
     for chosen_node in all_chosen_node:
-        G = remove_node(G, chosen_node)
+        G = remove_node(G, str(chosen_node))
         all_robustness.append(getRobustness(G, graph_name))
 
     return simpson(all_robustness) / len(all_robustness)
