@@ -149,7 +149,7 @@ def getRobustness(G: nx.Graph, graph: str) -> float:
     fullGCCsize = GCC_size(full_G)
     remainGCCsize = GCC_size(G)
 
-    return 1 - remainGCCsize/fullGCCsize
+    return (1 - remainGCCsize/fullGCCsize)*100
 
 def getHumanPayoff(graph_name: str, all_chosen_node: List[str]) -> float:
     all_robustness = [0]
